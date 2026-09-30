@@ -51,7 +51,6 @@ tailwind.config = {
     pointer-events: none;
     overflow: hidden;
   }
-  /* Slow gradient mesh */
   .bg-mesh {
     position: absolute;
     inset: -20%;
@@ -67,7 +66,6 @@ tailwind.config = {
     50%  { transform: translate(-3%, 4%) scale(1.08); }
     100% { transform: translate(4%, -2%) scale(1.04); }
   }
-  /* Faint grid */
   .bg-grid {
     position: absolute;
     inset: 0;
@@ -78,7 +76,6 @@ tailwind.config = {
     mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 85%);
     -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 85%);
   }
-  /* Grain */
   .bg-grain::after {
     content:"";
     position:absolute;
@@ -141,7 +138,6 @@ tailwind.config = {
     50%      { background-position: 100% 50%; }
   }
 
-  /* Hero name — subtle sheen pass */
   .hero-name {
     background: linear-gradient(110deg,
       #F0EDE6 0%,
@@ -162,7 +158,6 @@ tailwind.config = {
     50%      { background-position: -20% 50%; }
   }
 
-  /* Gold rule that draws in */
   .rule {
     display: block;
     height: 1px;
@@ -730,6 +725,10 @@ tailwind.config = {
         <span class="text-muted mr-3 text-xs uppercase tracking-widest">Based</span>
         <span id="contact-location" class="text-bone">Aba, Nigeria</span>
       </p>
+      <p>
+        <span class="text-muted mr-3 text-xs uppercase tracking-widest">WhatsApp</span>
+        <a id="contact-whatsapp" href="https://wa.me/2349161919164" target="_blank" rel="noopener noreferrer" class="quiet">+234 916 191 9164</a>
+      </p>
     </div>
 
     <div id="contact-socials" class="flex flex-wrap gap-6 mt-8 text-xs uppercase tracking-widest">
@@ -752,7 +751,7 @@ tailwind.config = {
 
 <!-- FLOATING WHATSAPP -->
 <div class="floaters" aria-hidden="false">
-  <a href="https://wa.me/234XXXXXXXXXX"
+  <a href="https://wa.me/2349161919164"
      class="whatsapp-float"
      target="_blank"
      rel="noopener noreferrer"
