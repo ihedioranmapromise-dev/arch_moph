@@ -7,19 +7,21 @@
 <meta name="description" content="Builder. Maker of Moph Echo Mirror.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
 tailwind.config = {
   theme: {
     extend: {
       colors: {
-        inkbg: '#0B0B0C',
-        inksurface: '#131315',
-        inkhover: '#1A1A1C',
-        bone: '#EDEAE4',
-        bonemuted: '#807D76',
-        gold: '#B8935A'
+        inkbg: '#08080A',
+        surface: '#0E0E11',
+        surface2: '#131316',
+        bone: '#F0EDE6',
+        muted: '#8A8780',
+        gold: '#C9A063',
+        amber: '#E5B067',
+        copper: '#B07A44'
       },
       fontFamily: {
         serif: ['Fraunces', 'serif'],
@@ -32,160 +34,311 @@ tailwind.config = {
 <style>
   html { scroll-behavior: smooth; }
   body {
-    background:#0B0B0C;
-    color:#EDEAE4;
+    background:#08080A;
+    color:#F0EDE6;
     font-family: Inter, system-ui, sans-serif;
+    font-weight: 300;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    letter-spacing: 0.005em;
   }
 
-  .section-label {
-    font-size:.72rem;
-    letter-spacing:.24em;
-    text-transform:uppercase;
-    color:#807D76;
-  }
-  .hairline { border-color: rgba(255,255,255,0.06); }
-
-  /* ---------- continuous ambient motion ---------- */
-  .ambient {
+  /* ============ BACKGROUND LAYERS ============ */
+  .bg-layer {
     position: fixed;
     inset: 0;
-    pointer-events: none;
     z-index: 0;
+    pointer-events: none;
     overflow: hidden;
   }
-  .ambient::before {
+  /* Slow gradient mesh */
+  .bg-mesh {
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(ellipse 60% 40% at 30% 10%, rgba(201,160,99,0.10), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 75% 55%, rgba(176,122,68,0.07), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 50% 90%, rgba(229,176,103,0.05), transparent 65%);
+    filter: blur(60px);
+    animation: meshDrift 45s ease-in-out infinite alternate;
+  }
+  @keyframes meshDrift {
+    0%   { transform: translate(0,0) scale(1); }
+    50%  { transform: translate(-3%, 4%) scale(1.08); }
+    100% { transform: translate(4%, -2%) scale(1.04); }
+  }
+  /* Faint grid */
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 85%);
+  }
+  /* Grain */
+  .bg-grain::after {
     content:"";
     position:absolute;
-    top: -20%;
-    left: 50%;
-    width: 900px;
-    height: 900px;
-    transform: translateX(-50%);
-    background: radial-gradient(circle, rgba(184,147,90,0.10) 0%, rgba(184,147,90,0.03) 35%, transparent 65%);
-    filter: blur(40px);
-    animation: drift 40s ease-in-out infinite alternate;
+    inset:0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.035 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: .6;
+    mix-blend-mode: overlay;
+    pointer-events: none;
   }
-  @keyframes drift {
-    0%   { transform: translate(-50%, 0) scale(1); opacity:.7; }
-    50%  { transform: translate(-46%, 6%) scale(1.06); opacity:1; }
-    100% { transform: translate(-54%, -2%) scale(1.02); opacity:.8; }
-  }
-  main, nav, footer, header { position: relative; z-index: 1; }
+  main, nav, header, footer, .floaters { position: relative; z-index: 1; }
 
-  /* ---------- scroll reveal ---------- */
+  /* ============ TYPOGRAPHY ============ */
+  .section-label {
+    font-size: .7rem;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: #8A8780;
+    font-weight: 400;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: .75rem;
+    font-size: .68rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: #8A8780;
+    font-weight: 400;
+  }
+  .eyebrow .num {
+    color: #C9A063;
+    font-variant-numeric: tabular-nums;
+  }
+  .eyebrow .bar {
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: linear-gradient(90deg, #C9A063, transparent);
+  }
+
+  .display {
+    font-family: Fraunces, serif;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+  }
+  .display em {
+    font-style: italic;
+    font-weight: 300;
+    background: linear-gradient(110deg, #E5B067 0%, #C9A063 40%, #B07A44 70%, #E5B067 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 6s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+
+  /* Hero name — subtle sheen pass */
+  .hero-name {
+    background: linear-gradient(110deg,
+      #F0EDE6 0%,
+      #F0EDE6 35%,
+      #E5B067 48%,
+      #C9A063 52%,
+      #F0EDE6 65%,
+      #F0EDE6 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: sheen 9s ease-in-out infinite;
+  }
+  @keyframes sheen {
+    0%, 100% { background-position: 120% 50%; }
+    50%      { background-position: -20% 50%; }
+  }
+
+  /* Gold rule that draws in */
+  .rule {
+    display: block;
+    height: 1px;
+    width: 0;
+    background: linear-gradient(90deg, #C9A063, rgba(201,160,99,0));
+    transition: width 1.4s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal.in .rule { width: 96px; }
+
+  /* ============ REVEALS ============ */
   .reveal {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
+    transform: translateY(24px);
+    transition: opacity 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1);
   }
-  .reveal.in {
-    opacity: 1;
-    transform: none;
-  }
+  .reveal.in { opacity: 1; transform: none; }
+
   .reveal-stagger > * {
     opacity: 0;
-    transform: translateY(16px);
-    transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
-  }
-  .reveal-stagger.in > * {
-    opacity: 1;
-    transform: none;
-  }
-  .reveal-stagger.in > *:nth-child(1) { transition-delay: .05s; }
-  .reveal-stagger.in > *:nth-child(2) { transition-delay: .15s; }
-  .reveal-stagger.in > *:nth-child(3) { transition-delay: .25s; }
-  .reveal-stagger.in > *:nth-child(4) { transition-delay: .35s; }
-  .reveal-stagger.in > *:nth-child(5) { transition-delay: .45s; }
-
-  /* hero load-in */
-  .hero-in > * {
-    opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(18px);
     transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
   }
-  .hero-in.in > * { opacity:1; transform:none; }
-  .hero-in.in > *:nth-child(1) { transition-delay: .1s; }
-  .hero-in.in > *:nth-child(2) { transition-delay: .25s; }
-  .hero-in.in > *:nth-child(3) { transition-delay: .4s; }
-  .hero-in.in > *:nth-child(4) { transition-delay: .55s; }
+  .reveal-stagger.in > * { opacity: 1; transform: none; }
+  .reveal-stagger.in > *:nth-child(1) { transition-delay: .06s; }
+  .reveal-stagger.in > *:nth-child(2) { transition-delay: .16s; }
+  .reveal-stagger.in > *:nth-child(3) { transition-delay: .26s; }
+  .reveal-stagger.in > *:nth-child(4) { transition-delay: .36s; }
+  .reveal-stagger.in > *:nth-child(5) { transition-delay: .46s; }
+  .reveal-stagger.in > *:nth-child(6) { transition-delay: .56s; }
 
-  /* ---------- hover motion ---------- */
-  a.quiet {
-    position: relative;
-    color:#EDEAE4;
-    text-decoration:none;
-    display:inline-block;
+  .hero-in > * {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 1s cubic-bezier(.22,1,.36,1), transform 1s cubic-bezier(.22,1,.36,1);
   }
-  a.quiet::after {
-    content:"";
-    position:absolute;
-    left:0; bottom:-3px;
-    width:0; height:1px;
-    background:#B8935A;
-    transition: width .4s cubic-bezier(.22,1,.36,1);
-  }
-  a.quiet:hover::after { width:100%; }
+  .hero-in.in > * { opacity: 1; transform: none; }
+  .hero-in.in > *:nth-child(1) { transition-delay: .15s; }
+  .hero-in.in > *:nth-child(2) { transition-delay: .3s; }
+  .hero-in.in > *:nth-child(3) { transition-delay: .5s; }
+  .hero-in.in > *:nth-child(4) { transition-delay: .68s; }
 
-  .card-media {
-    position: relative;
-    overflow: hidden;
-    border-radius: 10px;
-    transition: transform .6s cubic-bezier(.22,1,.36,1), border-color .6s ease;
-    border: 1px solid rgba(255,255,255,0.06);
-  }
-  .card-media img,
-  .card-media .placeholder {
-    transition: transform 1.1s cubic-bezier(.22,1,.36,1);
-  }
-  .card:hover .card-media {
-    transform: translateY(-4px);
-    border-color: rgba(184,147,90,0.35);
-  }
-  .card:hover .card-media img,
-  .card:hover .card-media .placeholder {
-    transform: scale(1.03);
-  }
-  .card { transition: transform .6s cubic-bezier(.22,1,.36,1); }
-
-  .btn-gold {
-    transition: transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s ease, opacity .3s ease;
-  }
-  .btn-gold:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(184,147,90,0.18);
-    opacity: 1;
-  }
-  .btn-gold:active { transform: translateY(0); }
-
-  .nav-link {
-    position: relative;
-    transition: color .3s ease;
-  }
-  .nav-link::after {
-    content:"";
-    position:absolute;
-    left:0; bottom:-4px;
-    width:0; height:1px;
-    background:#B8935A;
-    transition: width .4s cubic-bezier(.22,1,.36,1);
-  }
-  .nav-link:hover::after { width:100%; }
-
-  /* ---------- nav background fade ---------- */
+  /* ============ NAV ============ */
   nav {
-    transition: background .5s ease, border-color .5s ease;
+    transition: background .5s ease, border-color .5s ease, backdrop-filter .5s ease;
     background: transparent;
     border-bottom: 1px solid transparent;
   }
   nav.scrolled {
-    background: rgba(11,11,12,0.82);
-    backdrop-filter: blur(10px);
-    border-bottom-color: rgba(255,255,255,0.06);
+    background: rgba(8,8,10,0.75);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom-color: rgba(255,255,255,0.05);
+  }
+  .nav-link {
+    position: relative;
+    color: #8A8780;
+    transition: color .35s ease;
+    font-size: .82rem;
+    letter-spacing: .06em;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -5px;
+    width: 0; height: 1px;
+    background: linear-gradient(90deg, #C9A063, rgba(201,160,99,0.2));
+    transition: width .45s cubic-bezier(.22,1,.36,1);
+  }
+  .nav-link:hover { color: #F0EDE6; }
+  .nav-link:hover::after { width: 100%; }
+
+  /* ============ LINKS ============ */
+  .quiet {
+    position: relative;
+    color: #F0EDE6;
+    text-decoration: none;
+    display: inline-block;
+    font-size: .85rem;
+    letter-spacing: .04em;
+  }
+  .quiet::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -3px;
+    width: 0; height: 1px;
+    background: #C9A063;
+    transition: width .5s cubic-bezier(.22,1,.36,1);
+  }
+  .quiet:hover::after { width: 100%; }
+
+  /* ============ BUTTON ============ */
+  .btn-gold {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #E5B067 0%, #C9A063 60%, #B07A44 100%);
+    color: #08080A;
+    font-weight: 500;
+    letter-spacing: .04em;
+    transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .45s ease;
+    box-shadow: 0 6px 24px rgba(201,160,99,0.14);
+  }
+  .btn-gold::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -120%;
+    width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: skewX(-20deg);
+    transition: left .9s cubic-bezier(.22,1,.36,1);
+  }
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(201,160,99,0.28);
+  }
+  .btn-gold:hover::before { left: 130%; }
+
+  /* ============ CARDS ============ */
+  .card {
+    position: relative;
+    transition: transform .7s cubic-bezier(.22,1,.36,1);
+  }
+  .card:hover { transform: translateY(-5px); }
+
+  .card-media {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.055);
+    background: #0E0E11;
+    transition: border-color .6s ease, box-shadow .7s ease;
+  }
+  .card:hover .card-media {
+    border-color: rgba(201,160,99,0.4);
+    box-shadow:
+      0 20px 48px -20px rgba(0,0,0,0.7),
+      0 0 0 1px rgba(201,160,99,0.06),
+      inset 0 1px 0 rgba(255,255,255,0.03);
+  }
+  .card-media img, .card-media .placeholder {
+    transition: transform 1.4s cubic-bezier(.22,1,.36,1), filter .8s ease;
+  }
+  .card:hover .card-media img,
+  .card:hover .card-media .placeholder {
+    transform: scale(1.04);
   }
 
-  /* ---------- carousel ---------- */
+  .card-title {
+    position: relative;
+    display: inline-block;
+    font-family: Fraunces, serif;
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    color: #F0EDE6;
+    background-image: linear-gradient(90deg, #E5B067 0%, #C9A063 50%, #E5B067 100%);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size .7s cubic-bezier(.22,1,.36,1);
+    padding-bottom: 4px;
+  }
+  .card:hover .card-title { background-size: 100% 1px; }
+
+  .status-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 9999px;
+    background: #C9A063;
+    box-shadow: 0 0 0 3px rgba(201,160,99,0.15);
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(201,160,99,0.15); }
+    50%      { box-shadow: 0 0 0 6px rgba(201,160,99,0.05); }
+  }
+
+  /* ============ CAROUSEL ============ */
   .carousel-track {
     position: relative;
     width: 100%;
@@ -199,33 +352,138 @@ tailwind.config = {
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    transition: opacity .9s ease;
+    transition: opacity 1.1s ease;
   }
   .carousel-img.active { opacity: 1; }
   .dot {
-    width: 6px; height: 6px;
+    width: 5px; height: 5px;
     border-radius: 9999px;
-    background: rgba(255,255,255,0.18);
-    transition: background .35s, transform .35s;
+    background: rgba(255,255,255,0.2);
+    transition: background .4s, transform .4s;
     cursor: pointer;
   }
   .dot.active {
-    background: #B8935A;
-    transform: scale(1.35);
+    background: #C9A063;
+    transform: scale(1.5);
   }
 
-  .placeholder {
-    background: linear-gradient(135deg, #131315 0%, #1A1A1C 100%);
+  /* ============ SKILLS ============ */
+  .skill-row {
+    position: relative;
+    padding: .7rem 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    color: #8A8780;
+    font-size: .84rem;
+    transition: color .4s ease, padding-left .5s cubic-bezier(.22,1,.36,1);
+  }
+  .skill-row:first-child { border-top: 0; }
+  .skill-row::before {
+    content: "";
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    width: 4px; height: 4px;
+    border-radius: 9999px;
+    background: #C9A063;
+    transform: translateY(-50%) scale(0);
+    transition: transform .5s cubic-bezier(.22,1,.36,1);
+  }
+  .skill-row:hover {
+    color: #F0EDE6;
+    padding-left: 14px;
+  }
+  .skill-row:hover::before { transform: translateY(-50%) scale(1); }
+
+  /* ============ MARQUEE ============ */
+  .marquee {
+    overflow: hidden;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 1.25rem 0;
+    mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  }
+  .marquee-track {
+    display: inline-flex;
+    gap: 3.5rem;
+    white-space: nowrap;
+    animation: marquee 50s linear infinite;
+  }
+  .marquee-track span {
+    font-size: .72rem;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: #8A8780;
+  }
+  .marquee-track span::after {
+    content: "·";
+    margin-left: 3.5rem;
+    color: #C9A063;
+  }
+  @keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ============ FLOATING WHATSAPP ============ */
+  .floaters {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+  }
+  .whatsapp-float {
+    position: absolute;
+    bottom: 22px;
+    right: 22px;
+    width: 54px;
+    height: 54px;
+    border-radius: 9999px;
+    background: #25D366;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #3a3a3d;
-    font-size: .72rem;
-    letter-spacing: .25em;
-    text-transform: uppercase;
+    pointer-events: auto;
+    box-shadow: 0 10px 30px rgba(37,211,102,0.28), 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease;
+  }
+  .whatsapp-float:hover {
+    transform: scale(1.08);
+    box-shadow: 0 14px 40px rgba(37,211,102,0.42), 0 4px 14px rgba(0,0,0,0.5);
+  }
+  .whatsapp-float::before {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 9999px;
+    border: 1.5px solid rgba(37,211,102,0.5);
+    animation: ring 2.6s ease-out infinite;
+  }
+  @keyframes ring {
+    0%   { transform: scale(.85); opacity: .8; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+  .whatsapp-float svg {
+    width: 26px; height: 26px;
+    fill: #08080A;
+    position: relative;
+    z-index: 1;
   }
 
-  ::selection { background:#B8935A; color:#0B0B0C; }
+  .placeholder {
+    background: linear-gradient(135deg, #0E0E11 0%, #131316 55%, #0E0E11 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a4a4d;
+    font-size: .68rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    width: 100%;
+    height: 100%;
+  }
+
+  ::selection { background: #C9A063; color: #08080A; }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -236,57 +494,84 @@ tailwind.config = {
       opacity: 1 !important;
       transform: none !important;
     }
+    .rule { width: 96px !important; }
     html { scroll-behavior: auto; }
   }
 </style>
 </head>
 <body>
 
-<div class="ambient" aria-hidden="true"></div>
+<!-- BACKGROUND -->
+<div class="bg-layer bg-grain" aria-hidden="true">
+  <div class="bg-mesh"></div>
+  <div class="bg-grid"></div>
+</div>
 
 <!-- NAV -->
 <nav id="nav" class="fixed top-0 inset-x-0 z-50">
-  <div class="max-w-6xl mx-auto px-6 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-    <a href="#" class="font-serif text-bone text-lg tracking-tight" id="nav-name">Moph</a>
-    <div class="flex gap-7 text-sm text-bonemuted">
-      <a href="#work" class="nav-link hover:text-bone">Work</a>
-      <a href="#about" class="nav-link hover:text-bone">About</a>
-      <a href="#skills" class="nav-link hover:text-bone">Skills</a>
-      <a href="#contact" class="nav-link hover:text-bone">Contact</a>
+  <div class="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
+    <a href="#" class="font-serif text-bone text-base tracking-tight" id="nav-name">Moph</a>
+    <div class="hidden md:flex gap-8 items-center">
+      <a href="#work" class="nav-link">Work</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#contact" class="nav-link">Contact</a>
     </div>
+    <a href="#contact" class="md:hidden nav-link">Contact</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <header class="min-h-screen flex items-center px-6">
-  <div class="max-w-6xl mx-auto w-full pt-32 hero-in" id="hero-block">
-    <p class="section-label mb-6">Architect</p>
-    <h1 id="hero-name" class="font-serif text-6xl md:text-8xl tracking-tight leading-[0.95] mb-8 text-bone">Moph</h1>
-    <p id="hero-line" class="text-bonemuted text-lg md:text-xl leading-relaxed max-w-[52ch] mb-12">
+  <div class="max-w-6xl mx-auto w-full pt-28 hero-in" id="hero-block">
+    <p class="eyebrow mb-8">
+      <span class="num">01</span>
+      <span class="bar"></span>
+      Architect
+    </p>
+    <h1 id="hero-name" class="hero-name display text-[3.25rem] md:text-[6.5rem] leading-[0.92] mb-8">
+      Monad&nbsp;Moph
+    </h1>
+    <p id="hero-line" class="text-muted text-base md:text-lg leading-relaxed max-w-[48ch] mb-10 font-light">
       I build software the way I build anything — measured twice, made to last.
     </p>
-    <a id="hero-action" href="#work" class="btn-gold inline-block bg-gold text-inkbg px-8 py-4 text-sm tracking-wide">
+    <a id="hero-action" href="#work" class="btn-gold inline-block px-7 py-3.5 text-sm">
       See the work
     </a>
   </div>
 </header>
 
+<!-- MARQUEE -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Software</span><span>Craft</span><span>Field</span><span>Patience</span><span>Structure</span><span>Attention</span><span>Detail</span><span>Honesty</span>
+    <span>Software</span><span>Craft</span><span>Field</span><span>Patience</span><span>Structure</span><span>Attention</span><span>Detail</span><span>Honesty</span>
+  </div>
+</div>
+
 <main>
 
 <!-- WORK -->
-<section id="work" class="px-6 py-20 md:py-28">
+<section id="work" class="px-6 py-16 md:py-24">
   <div class="max-w-6xl mx-auto">
-    <div class="reveal">
-      <p class="section-label mb-5">Selected Work</p>
-      <h2 class="font-serif text-4xl md:text-5xl tracking-tight mb-5 text-bone">Work</h2>
-      <p class="text-bonemuted mb-14 max-w-[52ch]">Things I have built. More coming.</p>
+    <div class="reveal mb-12">
+      <p class="eyebrow mb-5">
+        <span class="num">02</span>
+        <span class="bar"></span>
+        Selected Work
+      </p>
+      <h2 class="display text-4xl md:text-6xl mb-5">
+        Selected <em>Work</em>
+      </h2>
+      <span class="rule"></span>
+      <p class="text-muted mt-6 max-w-[52ch] text-sm">Things I have built. More coming.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 reveal-stagger">
 
-      <!-- PROJECT CARD 1 -->
+      <!-- PROJECT 1 -->
       <article class="card flex flex-col">
-        <div class="card-media relative w-full aspect-[16/10] bg-inksurface">
+        <div class="card-media relative w-full aspect-[16/10]">
           <div class="carousel-track" data-carousel>
             <div class="carousel-img placeholder active">Screenshot 1</div>
             <div class="carousel-img placeholder">Screenshot 2</div>
@@ -299,18 +584,18 @@ tailwind.config = {
           </div>
         </div>
         <div class="flex items-center gap-3 mt-5 mb-2">
-          <h3 class="font-serif text-2xl text-bone tracking-tight">Moph Echo Mirror</h3>
-          <span class="inline-block w-2 h-2 rounded-full" style="background:#B8935A;"></span>
+          <h3 class="card-title text-2xl">Moph Echo Mirror</h3>
+          <span class="status-dot"></span>
         </div>
-        <p class="text-bonemuted text-sm leading-relaxed mb-4 max-w-[52ch]">
+        <p class="text-muted text-sm leading-relaxed mb-4 max-w-[52ch] font-light">
           A mirror that listens. Built for reflection, not performance.
         </p>
-        <a href="#" class="quiet text-sm">Visit →</a>
+        <a href="#" class="quiet">Visit →</a>
       </article>
 
-      <!-- PROJECT CARD 2 -->
+      <!-- PROJECT 2 -->
       <article class="card flex flex-col">
-        <div class="card-media relative w-full aspect-[16/10] bg-inksurface">
+        <div class="card-media relative w-full aspect-[16/10]">
           <div class="carousel-track">
             <div class="carousel-img placeholder active">Screenshot 1</div>
             <div class="carousel-img placeholder">Screenshot 2</div>
@@ -321,12 +606,12 @@ tailwind.config = {
           </div>
         </div>
         <div class="flex items-center gap-3 mt-5 mb-2">
-          <h3 class="font-serif text-2xl text-bone tracking-tight">Project Two</h3>
+          <h3 class="card-title text-2xl">Project Two</h3>
         </div>
-        <p class="text-bonemuted text-sm leading-relaxed mb-4 max-w-[52ch]">
+        <p class="text-muted text-sm leading-relaxed mb-4 max-w-[52ch] font-light">
           Placeholder card. Filled in later from admin.
         </p>
-        <a href="#" class="quiet text-sm">Visit →</a>
+        <a href="#" class="quiet">Visit →</a>
       </article>
 
     </div>
@@ -334,68 +619,84 @@ tailwind.config = {
 </section>
 
 <!-- ABOUT -->
-<section id="about" class="px-6 py-20 md:py-28">
+<section id="about" class="px-6 py-16 md:py-24">
   <div class="max-w-6xl mx-auto reveal">
-    <p class="section-label mb-5">About</p>
-    <h2 class="font-serif text-4xl md:text-5xl tracking-tight mb-12 text-bone">About</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-      <div id="about-body" class="md:col-span-2 space-y-5 text-bonemuted leading-relaxed max-w-[65ch]">
+    <p class="eyebrow mb-5">
+      <span class="num">03</span>
+      <span class="bar"></span>
+      About
+    </p>
+    <h2 class="display text-4xl md:text-6xl mb-5">
+      A quiet <em>practice</em>
+    </h2>
+    <span class="rule"></span>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
+      <div id="about-body" class="md:col-span-2 space-y-5 text-muted leading-relaxed max-w-[62ch] font-light text-[0.95rem]">
         <p>I am Moph. I build software the way I build anything — slowly, with attention, measured twice.</p>
         <p>Moph Echo Mirror came from a simple question — what would a mirror say if it could listen?</p>
         <p>Building is a practice for me, spiritual as much as technical. Show up, work with your hands, make something honest. That is the whole of it.</p>
       </div>
       <div class="hidden md:block">
-        <div class="aspect-square w-full placeholder hairline border rounded-lg">Portrait</div>
+        <div class="aspect-square w-full placeholder border border-white/5 rounded-xl">Portrait</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- SKILLS -->
-<section id="skills" class="px-6 py-20 md:py-28">
+<section id="skills" class="px-6 py-16 md:py-24">
   <div class="max-w-6xl mx-auto">
-    <div class="reveal">
-      <p class="section-label mb-5">Capability</p>
-      <h2 class="font-serif text-4xl md:text-5xl tracking-tight mb-14 text-bone">Skills</h2>
+    <div class="reveal mb-12">
+      <p class="eyebrow mb-5">
+        <span class="num">04</span>
+        <span class="bar"></span>
+        Capability
+      </p>
+      <h2 class="display text-4xl md:text-6xl mb-5">
+        What I <em>carry</em>
+      </h2>
+      <span class="rule"></span>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-14 gap-y-14 reveal-stagger">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 reveal-stagger">
 
       <div>
-        <p class="section-label mb-5">Software</p>
-        <div class="text-bonemuted text-sm">
-          <div class="py-3">HTML, CSS, Tailwind CSS</div>
-          <div class="py-3 hairline border-t">Vanilla JavaScript</div>
-          <div class="py-3 hairline border-t">Supabase — Postgres, Storage, Auth</div>
-          <div class="py-3 hairline border-t">Vercel — hosting, serverless functions</div>
-          <div class="py-3 hairline border-t">REST API design and integration</div>
-          <div class="py-3 hairline border-t">Authentication flows</div>
-          <div class="py-3 hairline border-t">Responsive layout and typography</div>
-          <div class="py-3 hairline border-t">Debugging and reading other people's code</div>
-          <div class="py-3 hairline border-t">Git and version control</div>
-          <div class="py-3 hairline border-t">Writing documentation</div>
+        <p class="section-label mb-4">Software</p>
+        <div class="text-sm">
+          <div class="skill-row">HTML, CSS, Tailwind CSS</div>
+          <div class="skill-row">Vanilla JavaScript</div>
+          <div class="skill-row">Supabase — Postgres, Storage, Auth</div>
+          <div class="skill-row">Vercel — hosting, serverless functions</div>
+          <div class="skill-row">REST API design and integration</div>
+          <div class="skill-row">Authentication flows</div>
+          <div class="skill-row">Responsive layout and typography</div>
+          <div class="skill-row">Debugging and reading other people's code</div>
+          <div class="skill-row">Git and version control</div>
+          <div class="skill-row">Writing documentation</div>
         </div>
       </div>
 
       <div>
-        <p class="section-label mb-5">Craft</p>
-        <div class="text-bonemuted text-sm">
-          <div class="py-3">Carpentry and joinery</div>
-          <div class="py-3 hairline border-t">Finishing and repair</div>
-          <div class="py-3 hairline border-t">Hand tools, material knowledge</div>
+        <p class="section-label mb-4">Craft</p>
+        <div class="text-sm mb-10">
+          <div class="skill-row">Carpentry and joinery</div>
+          <div class="skill-row">Finishing and repair</div>
+          <div class="skill-row">Hand tools, material knowledge</div>
         </div>
 
-        <p class="section-label mb-5 mt-14">Field</p>
-        <div class="text-bonemuted text-sm">
-          <div class="py-3">Drone piloting — manual flight, framing, capture</div>
-          <div class="py-3 hairline border-t">Aerial photography and video</div>
-          <div class="py-3 hairline border-t">Site survey and mapping by drone</div>
+        <p class="section-label mb-4">Field</p>
+        <div class="text-sm mb-10">
+          <div class="skill-row">Drone piloting — manual flight, framing, capture</div>
+          <div class="skill-row">Aerial photography and video</div>
+          <div class="skill-row">Site survey and mapping by drone</div>
         </div>
 
-        <p class="section-label mb-5 mt-14">Working</p>
-        <div class="text-bonemuted text-sm">
-          <div class="py-3">Building alone, end to end</div>
-          <div class="py-3 hairline border-t">Writing and documentation</div>
-          <div class="py-3 hairline border-t">Contemplative practice</div>
+        <p class="section-label mb-4">Working</p>
+        <div class="text-sm">
+          <div class="skill-row">Building alone, end to end</div>
+          <div class="skill-row">Writing and documentation</div>
+          <div class="skill-row">Contemplative practice</div>
         </div>
       </div>
 
@@ -404,22 +705,37 @@ tailwind.config = {
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="px-6 py-20 md:py-28">
+<section id="contact" class="px-6 py-16 md:py-24">
   <div class="max-w-6xl mx-auto reveal">
-    <p class="section-label mb-5">Contact</p>
-    <h2 class="font-serif text-4xl md:text-5xl tracking-tight mb-8 text-bone">Contact</h2>
-    <p class="text-bonemuted mb-12 max-w-[52ch]">Write to me. I answer slowly, but I answer.</p>
+    <p class="eyebrow mb-5">
+      <span class="num">05</span>
+      <span class="bar"></span>
+      Contact
+    </p>
+    <h2 class="display text-4xl md:text-6xl mb-5">
+      Say <em>hello</em>
+    </h2>
+    <span class="rule"></span>
 
-    <a id="contact-email" href="mailto:ihedioranmapromise@gmail.com" class="font-serif text-2xl md:text-4xl text-bone quiet inline-block mb-8">
-      ihedioranmapromise@gmail.com
-    </a>
+    <p class="text-muted mt-6 mb-8 max-w-[52ch] text-sm font-light">
+      Write to me. I answer slowly, but I answer.
+    </p>
 
-    <p id="contact-location" class="text-bonemuted text-sm mb-10">Aba, Nigeria</p>
+    <div class="space-y-3 text-sm">
+      <p>
+        <span class="text-muted mr-3 text-xs uppercase tracking-widest">Email</span>
+        <a id="contact-email" href="mailto:ihedioranmapromise@gmail.com" class="quiet">ihedioranmapromise@gmail.com</a>
+      </p>
+      <p>
+        <span class="text-muted mr-3 text-xs uppercase tracking-widest">Based</span>
+        <span id="contact-location" class="text-bone">Aba, Nigeria</span>
+      </p>
+    </div>
 
-    <div id="contact-socials" class="flex flex-wrap gap-x-8 gap-y-3 text-sm text-bonemuted">
-      <a href="#" class="nav-link hover:text-bone">GitHub</a>
-      <a href="#" class="nav-link hover:text-bone">X</a>
-      <a href="#" class="nav-link hover:text-bone">TikTok</a>
+    <div id="contact-socials" class="flex flex-wrap gap-6 mt-8 text-xs uppercase tracking-widest">
+      <a href="#" class="nav-link">GitHub</a>
+      <a href="#" class="nav-link">X</a>
+      <a href="#" class="nav-link">TikTok</a>
     </div>
   </div>
 </section>
@@ -427,29 +743,42 @@ tailwind.config = {
 </main>
 
 <!-- FOOTER -->
-<footer class="px-6 py-12 hairline border-t">
-  <div class="max-w-6xl mx-auto text-center text-xs text-bonemuted space-y-2">
+<footer class="px-6 py-10 border-t border-white/5 mt-8">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-muted tracking-wider">
     <p id="footer-copy">© 2026 Moph.</p>
-    <p id="footer-line" class="text-gold">Built on rock.</p>
+    <p id="footer-line" class="text-gold tracking-[0.2em] uppercase text-[0.68rem]">Built on rock.</p>
   </div>
 </footer>
 
+<!-- FLOATING WHATSAPP -->
+<div class="floaters" aria-hidden="false">
+  <a href="https://wa.me/234XXXXXXXXXX"
+     class="whatsapp-float"
+     target="_blank"
+     rel="noopener noreferrer"
+     aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.464 3.488"/>
+    </svg>
+  </a>
+</div>
+
 <script>
-// ---------- nav scroll state ----------
+// Nav scroll state
 const nav = document.getElementById('nav');
 const onScroll = () => {
-  if (window.scrollY > 40) nav.classList.add('scrolled');
+  if (window.scrollY > 30) nav.classList.add('scrolled');
   else nav.classList.remove('scrolled');
 };
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
-// ---------- hero load-in ----------
+// Hero load-in
 window.addEventListener('load', () => {
   document.getElementById('hero-block').classList.add('in');
 });
 
-// ---------- scroll reveals ----------
+// Scroll reveals
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
@@ -461,7 +790,7 @@ const io = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
 
-// ---------- carousel ----------
+// Carousel
 document.querySelectorAll('[data-carousel]').forEach(track => {
   const imgs = track.querySelectorAll('.carousel-img');
   const dots = track.parentElement.querySelectorAll('.dot');
@@ -475,7 +804,7 @@ document.querySelectorAll('[data-carousel]').forEach(track => {
     dots.forEach((d, k) => d.classList.toggle('active', k === i));
   };
 
-  const start = () => { if (!timer) timer = setInterval(() => go(i + 1), 4000); };
+  const start = () => { if (!timer) timer = setInterval(() => go(i + 1), 4500); };
   const stop = () => { clearInterval(timer); timer = null; };
 
   dots.forEach((d, k) => {
