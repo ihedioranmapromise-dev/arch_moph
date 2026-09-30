@@ -44,24 +44,16 @@ tailwind.config = {
   }
   img, video, svg { display: block; max-width: 100%; }
 
-  /* ============ BACKGROUND LAYERS ============ */
-  .bg-layer {
-    position: fixed; inset: 0;
-    z-index: 0; pointer-events: none;
-    overflow: hidden;
-  }
+  .bg-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
   .bg-glow-top {
-    position: absolute;
-    top: -30%; left: 50%;
-    transform: translateX(-50%);
+    position: absolute; top: -30%; left: 50%; transform: translateX(-50%);
     width: 1100px; height: 1100px;
     background: radial-gradient(circle, rgba(201,160,99,0.13) 0%, rgba(201,160,99,0.03) 42%, transparent 68%);
     filter: blur(20px);
     animation: glowTop 60s ease-in-out infinite alternate;
   }
   .bg-glow-bottom {
-    position: absolute;
-    bottom: -30%; right: -15%;
+    position: absolute; bottom: -30%; right: -15%;
     width: 900px; height: 900px;
     background: radial-gradient(circle, rgba(176,122,68,0.09) 0%, rgba(176,122,68,0.02) 45%, transparent 70%);
     filter: blur(30px);
@@ -86,56 +78,34 @@ tailwind.config = {
   }
   main, nav, header, footer { position: relative; z-index: 1; }
 
-  /* ============ TYPOGRAPHY ============ */
   .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: .85rem;
-    font-size: .66rem;
-    letter-spacing: .32em;
-    text-transform: uppercase;
-    color: #8A8780;
-    font-weight: 400;
+    display: inline-flex; align-items: center; gap: .85rem;
+    font-size: .66rem; letter-spacing: .32em; text-transform: uppercase;
+    color: #8A8780; font-weight: 400;
   }
   .eyebrow .line {
-    display: inline-block;
-    width: 26px; height: 1px;
+    display: inline-block; width: 26px; height: 1px;
     background: linear-gradient(90deg, transparent, #C9A063);
   }
   .eyebrow .line.right {
     background: linear-gradient(90deg, #C9A063, transparent);
   }
-  .eyebrow.centered { justify-content: center; width: 100%; }
 
   .display {
-    font-family: Fraunces, serif;
-    font-weight: 400;
-    letter-spacing: -0.022em;
-    line-height: 1.02;
-    color: #F0EDE6;
+    font-family: Fraunces, serif; font-weight: 400;
+    letter-spacing: -0.022em; line-height: 1.02; color: #F0EDE6;
   }
   .display em {
-    font-style: italic;
-    font-weight: 300;
+    font-style: italic; font-weight: 300;
     background: linear-gradient(110deg, #E5B067 0%, #C9A063 45%, #B07A44 70%, #E5B067 100%);
     background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
     animation: shimmer 7s ease-in-out infinite;
   }
   @keyframes shimmer {
     0%, 100% { background-position: 0% 50%; }
     50%      { background-position: 100% 50%; }
-  }
-  /* outlined word */
-  .display .outline {
-    color: transparent;
-    -webkit-text-stroke: 1.2px rgba(201,160,99,0.55);
-    text-stroke: 1.2px rgba(201,160,99,0.55);
-    font-style: italic;
-    font-weight: 300;
   }
 
   .hero-name {
@@ -160,7 +130,6 @@ tailwind.config = {
   }
   .reveal.in .rule { width: 88px; }
 
-  /* ============ REVEALS ============ */
   .reveal {
     opacity: 0; transform: translateY(22px);
     transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
@@ -188,7 +157,6 @@ tailwind.config = {
   .hero-in.in > *:nth-child(4) { transition-delay: .6s; }
   .hero-in.in > *:nth-child(5) { transition-delay: .74s; }
 
-  /* ============ NAV ============ */
   nav {
     transition: background .35s ease, border-color .35s ease, backdrop-filter .35s ease;
     background: transparent;
@@ -199,39 +167,23 @@ tailwind.config = {
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
     border-bottom-color: rgba(255,255,255,0.05);
   }
-  .brand-mark {
-    display: inline-flex; align-items: center; gap: 10px;
-    text-decoration: none;
-  }
+  .brand-mark { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
   .brand-logo {
-    width: 30px; height: 30px;
-    border-radius: 8px;
+    width: 30px; height: 30px; border-radius: 8px;
     display: inline-flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, rgba(201,160,99,0.16) 0%, rgba(176,122,68,0.06) 100%);
     border: 1px solid rgba(201,160,99,0.3);
-    font-family: Fraunces, serif;
-    font-weight: 500;
-    font-size: 15px;
-    color: #E5B067;
-    letter-spacing: -0.02em;
+    font-family: Fraunces, serif; font-weight: 500; font-size: 15px;
+    color: #E5B067; letter-spacing: -0.02em;
   }
-  .brand-name {
-    font-family: Fraunces, serif;
-    font-size: 1rem;
-    letter-spacing: -0.01em;
-    color: #F0EDE6;
-  }
+  .brand-name { font-family: Fraunces, serif; font-size: 1rem; letter-spacing: -0.01em; color: #F0EDE6; }
 
   .nav-link {
-    position: relative;
-    color: #8A8780;
-    transition: color .3s ease;
-    font-size: .82rem;
-    letter-spacing: .06em;
+    position: relative; color: #8A8780;
+    transition: color .3s ease; font-size: .82rem; letter-spacing: .06em;
   }
   .nav-link::after {
-    content: "";
-    position: absolute; left: 0; bottom: -5px;
+    content: ""; position: absolute; left: 0; bottom: -5px;
     width: 0; height: 1px;
     background: linear-gradient(90deg, #C9A063, rgba(201,160,99,0.2));
     transition: width .4s cubic-bezier(.22,1,.36,1);
@@ -241,40 +193,31 @@ tailwind.config = {
 
   .menu-btn {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 42px; height: 42px;
-    border-radius: 12px;
+    width: 42px; height: 42px; border-radius: 12px;
     background: rgba(20,20,26,0.7);
     border: 1px solid rgba(255,255,255,0.08);
     color: #F0EDE6;
     transition: border-color .3s, background .3s, color .3s, transform .3s;
   }
-  .menu-btn:hover {
-    border-color: rgba(201,160,99,0.55);
-    color: #E5B067;
-    background: rgba(20,20,26,1);
-  }
+  .menu-btn:hover { border-color: rgba(201,160,99,0.55); color: #E5B067; background: rgba(20,20,26,1); }
   .menu-btn:active { transform: scale(.96); }
   .menu-btn svg { width: 18px; height: 18px; }
   .menu-btn .dots circle { transition: fill .3s; }
   .menu-btn:hover .dots circle { fill: #E5B067; }
 
-  /* mobile menu */
   .mobile-menu {
     position: fixed; inset: 0;
     background: rgba(10,10,15,0.98);
     backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
     transform: translateY(-100%);
     transition: transform .5s cubic-bezier(.22,1,.36,1);
-    z-index: 55;
-    padding: 5.5rem 1.5rem 2rem;
-    overflow-y: auto;
+    z-index: 55; padding: 5.5rem 1.5rem 2rem; overflow-y: auto;
   }
   .mobile-menu.open { transform: translateY(0); }
   .mobile-menu a {
     display: flex; align-items: center; justify-content: space-between;
     padding: 1rem 0;
-    font-family: Fraunces, serif;
-    font-size: 1.55rem;
+    font-family: Fraunces, serif; font-size: 1.55rem;
     color: #F0EDE6;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     transition: color .3s, padding-left .35s cubic-bezier(.22,1,.36,1);
@@ -282,8 +225,7 @@ tailwind.config = {
   .mobile-menu a:last-child { border-bottom: none; }
   .mobile-menu a:hover { color: #E5B067; padding-left: 8px; }
   .mobile-menu a .arrow {
-    width: 18px; height: 18px;
-    color: #8A8780;
+    width: 18px; height: 18px; color: #8A8780;
     transition: transform .35s cubic-bezier(.22,1,.36,1), color .3s;
   }
   .mobile-menu a:hover .arrow { transform: translateX(4px); color: #E5B067; }
@@ -299,43 +241,32 @@ tailwind.config = {
   .mobile-menu .menu-close:hover { border-color: rgba(201,160,99,0.6); color: #E5B067; }
   .mobile-menu .menu-close svg { width: 16px; height: 16px; }
 
-  /* ============ LINKS ============ */
   .quiet {
-    position: relative;
-    color: #F0EDE6; text-decoration: none;
+    position: relative; color: #F0EDE6; text-decoration: none;
     display: inline-flex; align-items: center; gap: 7px;
     font-size: .85rem; letter-spacing: .04em;
   }
   .quiet::after {
-    content: "";
-    position: absolute; left: 0; bottom: -3px;
-    width: 0; height: 1px;
-    background: #C9A063;
+    content: ""; position: absolute; left: 0; bottom: -3px;
+    width: 0; height: 1px; background: #C9A063;
     transition: width .45s cubic-bezier(.22,1,.36,1);
   }
   .quiet:hover::after { width: 100%; }
   .quiet svg { width: 13px; height: 13px; transition: transform .35s cubic-bezier(.22,1,.36,1); }
   .quiet:hover svg { transform: translateX(3px); }
 
-  /* ============ BUTTONS ============ */
   .btn-primary {
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
     display: inline-flex; align-items: center; gap: 8px;
-    padding: .9rem 1.6rem;
-    border-radius: 999px;
+    padding: .9rem 1.6rem; border-radius: 999px;
     background: linear-gradient(135deg, #E5B067 0%, #C9A063 55%, #B07A44 100%);
-    color: #0A0A0F;
-    font-size: .82rem;
-    font-weight: 500;
-    letter-spacing: .06em;
-    text-transform: uppercase;
+    color: #0A0A0F; font-size: .82rem; font-weight: 500;
+    letter-spacing: .06em; text-transform: uppercase;
     transition: transform .3s cubic-bezier(.22,1,.36,1), box-shadow .4s ease;
     box-shadow: 0 8px 24px rgba(201,160,99,0.2), 0 0 0 1px rgba(201,160,99,0.1) inset;
   }
   .btn-primary::before {
-    content: "";
-    position: absolute; top: 0; left: -120%;
+    content: ""; position: absolute; top: 0; left: -120%;
     width: 60%; height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
     transform: skewX(-20deg);
@@ -350,25 +281,18 @@ tailwind.config = {
 
   .btn-outline {
     display: inline-flex; align-items: center; gap: 8px;
-    padding: .9rem 1.6rem;
-    border-radius: 999px;
+    padding: .9rem 1.6rem; border-radius: 999px;
     border: 1px solid rgba(201,160,99,0.4);
-    color: #E5B067;
-    background: rgba(201,160,99,0.02);
-    font-size: .82rem;
-    letter-spacing: .08em;
-    text-transform: uppercase;
+    color: #E5B067; background: rgba(201,160,99,0.02);
+    font-size: .82rem; letter-spacing: .08em; text-transform: uppercase;
     transition: border-color .3s, background .3s, color .3s, transform .3s;
   }
   .btn-outline:hover {
-    border-color: #C9A063;
-    background: rgba(201,160,99,0.08);
-    color: #F0EDE6;
-    transform: translateY(-2px);
+    border-color: #C9A063; background: rgba(201,160,99,0.08);
+    color: #F0EDE6; transform: translateY(-2px);
   }
   .btn-outline svg { width: 13px; height: 13px; }
 
-  /* ============ HERO STAGGERED INFO ROW ============ */
   .hero-stats {
     display: flex; flex-wrap: wrap; gap: 2rem;
     margin-top: 1.75rem;
@@ -389,10 +313,8 @@ tailwind.config = {
     margin-top: 2px;
   }
 
-  /* ============ CARDS (glassy) ============ */
   .card {
-    position: relative;
-    border-radius: 16px;
+    position: relative; border-radius: 16px;
     background: linear-gradient(180deg, rgba(20,20,26,0.85) 0%, rgba(16,16,20,0.75) 100%);
     border: 1px solid rgba(255,255,255,0.06);
     overflow: hidden;
@@ -400,27 +322,19 @@ tailwind.config = {
     contain: paint;
   }
   .card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 16px;
+    content: ""; position: absolute; inset: 0; border-radius: 16px;
     background: radial-gradient(circle at 50% 0%, rgba(201,160,99,0.08) 0%, transparent 55%);
-    opacity: 0;
-    transition: opacity .5s ease;
-    pointer-events: none;
+    opacity: 0; transition: opacity .5s ease; pointer-events: none;
   }
   .card:hover {
     transform: translateY(-4px);
     border-color: rgba(201,160,99,0.35);
-    box-shadow:
-      0 22px 48px -22px rgba(0,0,0,0.75),
-      0 0 0 1px rgba(201,160,99,0.06);
+    box-shadow: 0 22px 48px -22px rgba(0,0,0,0.75), 0 0 0 1px rgba(201,160,99,0.06);
   }
   .card:hover::before { opacity: 1; }
 
   .card-media {
-    position: relative;
-    overflow: hidden;
+    position: relative; overflow: hidden;
     border-bottom: 1px solid rgba(255,255,255,0.05);
     background: #0E0E13;
   }
@@ -435,12 +349,10 @@ tailwind.config = {
 
   .card-head {
     display: flex; align-items: flex-start; justify-content: space-between;
-    gap: 12px;
-    margin-bottom: .9rem;
+    gap: 12px; margin-bottom: .9rem;
   }
   .icon-tile {
-    width: 42px; height: 42px;
-    border-radius: 11px;
+    width: 42px; height: 42px; border-radius: 11px;
     display: inline-flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, rgba(201,160,99,0.14) 0%, rgba(176,122,68,0.04) 100%);
     border: 1px solid rgba(201,160,99,0.28);
@@ -454,10 +366,8 @@ tailwind.config = {
     transform: translateY(-1px);
   }
   .card-num {
-    font-family: Fraunces, serif;
-    font-size: .8rem;
-    color: #4a4a4d;
-    letter-spacing: .1em;
+    font-family: Fraunces, serif; font-size: .8rem;
+    color: #4a4a4d; letter-spacing: .1em;
     font-variant-numeric: tabular-nums;
     transition: color .35s;
   }
@@ -465,33 +375,23 @@ tailwind.config = {
 
   .card-title {
     display: inline-block;
-    font-family: Fraunces, serif;
-    font-weight: 400;
-    letter-spacing: -0.015em;
-    color: #F0EDE6;
-    font-size: 1.25rem;
-    padding-bottom: 3px;
+    font-family: Fraunces, serif; font-weight: 400;
+    letter-spacing: -0.015em; color: #F0EDE6;
+    font-size: 1.25rem; padding-bottom: 3px;
     background-image: linear-gradient(90deg, #E5B067 0%, #C9A063 50%, #E5B067 100%);
-    background-size: 0% 1px;
-    background-position: 0 100%;
-    background-repeat: no-repeat;
+    background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat;
     transition: background-size .55s cubic-bezier(.22,1,.36,1);
   }
   .card:hover .card-title { background-size: 100% 1px; }
 
   .card-desc {
-    font-size: .88rem;
-    line-height: 1.65;
-    color: #8A8780;
-    font-weight: 300;
-    margin-bottom: 1rem;
+    font-size: .88rem; line-height: 1.65;
+    color: #8A8780; font-weight: 300; margin-bottom: 1rem;
   }
 
   .status-dot {
-    display: inline-block;
-    width: 6px; height: 6px; border-radius: 9999px;
-    background: #C9A063;
-    box-shadow: 0 0 0 3px rgba(201,160,99,0.15);
+    display: inline-block; width: 6px; height: 6px; border-radius: 9999px;
+    background: #C9A063; box-shadow: 0 0 0 3px rgba(201,160,99,0.15);
     animation: dotPulse 3s ease-in-out infinite;
   }
   @keyframes dotPulse {
@@ -499,33 +399,26 @@ tailwind.config = {
     50%      { box-shadow: 0 0 0 6px rgba(201,160,99,0.03); }
   }
 
-  /* carousel */
   .carousel-track { position: relative; width: 100%; height: 100%; overflow: hidden; }
   .carousel-img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity .9s ease;
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; opacity: 0; transition: opacity .9s ease;
   }
   .carousel-img.active { opacity: 1; }
   .dot {
     width: 5px; height: 5px; border-radius: 9999px;
     background: rgba(255,255,255,0.2);
-    transition: background .35s, transform .35s;
-    cursor: pointer;
+    transition: background .35s, transform .35s; cursor: pointer;
   }
   .dot.active { background: #C9A063; transform: scale(1.5); }
 
-  /* video placeholder */
   .video-placeholder {
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
     background: linear-gradient(135deg, #0E0E13 0%, #14141A 55%, #0E0E13 100%);
   }
   .play-btn {
-    width: 60px; height: 60px;
-    border-radius: 9999px;
+    width: 60px; height: 60px; border-radius: 9999px;
     background: rgba(10,10,15,0.65);
     border: 1px solid rgba(201,160,99,0.5);
     display: flex; align-items: center; justify-content: center;
@@ -542,29 +435,22 @@ tailwind.config = {
     position: absolute; bottom: 12px; left: 50%;
     transform: translateX(-50%);
     font-size: .58rem; letter-spacing: .3em;
-    text-transform: uppercase;
-    color: #4a4a4d;
+    text-transform: uppercase; color: #4a4a4d;
   }
 
   .badge {
     position: absolute; top: 12px; left: 12px;
-    padding: 5px 10px;
-    font-size: .58rem; letter-spacing: .24em;
-    text-transform: uppercase;
-    color: #E5B067;
+    padding: 5px 10px; font-size: .58rem; letter-spacing: .24em;
+    text-transform: uppercase; color: #E5B067;
     background: rgba(10,10,15,0.78);
     border: 1px solid rgba(201,160,99,0.35);
     border-radius: 999px;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
     z-index: 2;
   }
 
-  /* ============ SKILLS BLOCK ============ */
   .skills-block {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+    display: grid; grid-template-columns: 1fr; gap: 1.25rem;
   }
   @media (min-width: 768px) {
     .skills-block { grid-template-columns: 1fr 1fr; gap: 1.25rem; }
@@ -628,12 +514,10 @@ tailwind.config = {
   .skill-row:hover { color: #F0EDE6; padding-left: 14px; }
   .skill-row:hover::before { transform: translateY(-50%) scale(1); }
 
-  /* ============ SOCIALS ============ */
   .socials { display: flex; gap: 10px; flex-wrap: wrap; }
   .social-icon {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 42px; height: 42px;
-    border-radius: 12px;
+    width: 42px; height: 42px; border-radius: 12px;
     background: rgba(20,20,26,0.6);
     border: 1px solid rgba(255,255,255,0.08);
     color: #8A8780;
@@ -647,7 +531,6 @@ tailwind.config = {
   }
   .social-icon svg { width: 16px; height: 16px; }
 
-  /* ============ MARQUEE ============ */
   .marquee {
     overflow: hidden;
     border-top: 1px solid rgba(255,255,255,0.05);
@@ -657,34 +540,25 @@ tailwind.config = {
     -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
   }
   .marquee-track {
-    display: inline-flex;
-    gap: 3rem;
-    white-space: nowrap;
+    display: inline-flex; gap: 3rem; white-space: nowrap;
     animation: marquee 55s linear infinite;
     will-change: transform;
   }
   .marquee-track span {
-    font-size: .68rem;
-    letter-spacing: .34em;
-    text-transform: uppercase;
-    color: #8A8780;
+    font-size: .68rem; letter-spacing: .34em;
+    text-transform: uppercase; color: #8A8780;
   }
   .marquee-track span::after {
-    content: "·";
-    margin-left: 3rem;
-    color: #C9A063;
+    content: "·"; margin-left: 3rem; color: #C9A063;
   }
   @keyframes marquee {
     0%   { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
 
-  /* ============ WHATSAPP FLOAT ============ */
   .whatsapp-float {
-    position: fixed;
-    bottom: 20px; right: 20px;
-    width: 54px; height: 54px;
-    border-radius: 9999px;
+    position: fixed; bottom: 20px; right: 20px;
+    width: 54px; height: 54px; border-radius: 9999px;
     background: #25D366;
     display: flex; align-items: center; justify-content: center;
     z-index: 70;
@@ -696,9 +570,7 @@ tailwind.config = {
     box-shadow: 0 14px 34px rgba(37,211,102,0.45), 0 4px 14px rgba(0,0,0,0.5);
   }
   .whatsapp-float::before {
-    content: "";
-    position: absolute; inset: -6px;
-    border-radius: 9999px;
+    content: ""; position: absolute; inset: -6px; border-radius: 9999px;
     border: 1.5px solid rgba(37,211,102,0.45);
     animation: ring 2.8s ease-out infinite;
   }
@@ -707,19 +579,15 @@ tailwind.config = {
     100% { transform: scale(1.5); opacity: 0; }
   }
   .whatsapp-float svg {
-    width: 24px; height: 24px;
-    fill: #0A0A0F;
+    width: 24px; height: 24px; fill: #0A0A0F;
     position: relative; z-index: 1;
   }
 
   .placeholder {
     background: linear-gradient(135deg, #0E0E13 0%, #14141A 55%, #0E0E13 100%);
     display: flex; align-items: center; justify-content: center;
-    color: #4a4a4d;
-    font-size: .62rem;
-    letter-spacing: .3em;
-    text-transform: uppercase;
-    width: 100%; height: 100%;
+    color: #4a4a4d; font-size: .62rem; letter-spacing: .3em;
+    text-transform: uppercase; width: 100%; height: 100%;
   }
 
   ::selection { background: #C9A063; color: #0A0A0F; }
@@ -774,8 +642,7 @@ tailwind.config = {
   <a href="#contact">Contact <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
 </div>
 
-<!-- HERO -->
-<header class="px-5 pt-28 pb-10 md:pt-36 md:pb-16">
+<header class="px-5 pt-20 pb-8 md:pt-28 md:pb-12">
   <div class="max-w-6xl mx-auto hero-in" id="hero-block">
     <p class="eyebrow mb-6">
       <span class="line"></span>
@@ -822,8 +689,7 @@ tailwind.config = {
 
 <main>
 
-<!-- WORK PREVIEW -->
-<section id="work-preview" class="px-5 py-12 md:py-18">
+<section id="work-preview" class="px-5 py-8 md:py-12">
   <div class="max-w-6xl mx-auto">
     <div class="reveal mb-9">
       <p class="eyebrow mb-4">
@@ -841,7 +707,6 @@ tailwind.config = {
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 reveal-stagger">
 
-      <!-- DRONE -->
       <article class="card flex flex-col">
         <a href="work.html#drone" class="card-media relative block w-full aspect-video">
           <span class="badge">Drone</span>
@@ -877,7 +742,6 @@ tailwind.config = {
         </div>
       </article>
 
-      <!-- SOFTWARE -->
       <article class="card flex flex-col">
         <a href="work.html#software" class="card-media relative block w-full aspect-video">
           <div class="carousel-track" data-carousel>
@@ -925,8 +789,7 @@ tailwind.config = {
   </div>
 </section>
 
-<!-- ABOUT -->
-<section id="about" class="px-5 py-12 md:py-18">
+<section id="about" class="px-5 py-8 md:py-12">
   <div class="max-w-6xl mx-auto reveal">
     <p class="eyebrow mb-4">
       <span class="line"></span>
@@ -950,8 +813,7 @@ tailwind.config = {
   </div>
 </section>
 
-<!-- SKILLS -->
-<section id="skills" class="px-5 py-12 md:py-18">
+<section id="skills" class="px-5 py-8 md:py-12">
   <div class="max-w-6xl mx-auto">
     <div class="reveal mb-9">
       <p class="eyebrow mb-4">
@@ -966,7 +828,6 @@ tailwind.config = {
 
     <div class="skills-block">
 
-      <!-- Software -->
       <div class="skill-card">
         <div class="skill-card-head">
           <span class="icon-tile">
@@ -991,7 +852,6 @@ tailwind.config = {
         </div>
       </div>
 
-      <!-- Craft -->
       <div class="skill-card">
         <div class="skill-card-head">
           <span class="icon-tile">
@@ -1010,7 +870,6 @@ tailwind.config = {
         </div>
       </div>
 
-      <!-- Field -->
       <div class="skill-card">
         <div class="skill-card-head">
           <span class="icon-tile">
@@ -1033,7 +892,6 @@ tailwind.config = {
         </div>
       </div>
 
-      <!-- Working -->
       <div class="skill-card">
         <div class="skill-card-head">
           <span class="icon-tile">
@@ -1057,8 +915,7 @@ tailwind.config = {
   </div>
 </section>
 
-<!-- CONTACT -->
-<section id="contact" class="px-5 py-12 md:py-18">
+<section id="contact" class="px-5 py-8 md:py-12">
   <div class="max-w-6xl mx-auto reveal">
     <p class="eyebrow mb-4">
       <span class="line"></span>
@@ -1177,7 +1034,6 @@ const io = new IntersectionObserver((entries) => {
 }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
 document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => io.observe(el));
 
-// Dynamic skill rows
 document.querySelectorAll('.skill-card').forEach(card => {
   const rows = card.querySelectorAll('.skill-row');
   if (!rows.length) return;
@@ -1192,7 +1048,6 @@ document.querySelectorAll('.skill-card').forEach(card => {
   sIO.observe(card);
 });
 
-// Carousel
 document.querySelectorAll('[data-carousel]').forEach(track => {
   const imgs = track.querySelectorAll('.carousel-img');
   const dots = track.parentElement.querySelectorAll('.dot');
