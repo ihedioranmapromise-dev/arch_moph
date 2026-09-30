@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moph</title>
+<meta name="description" content="Builder. Maker of Moph Echo Mirror.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        inkbg: '#0B0B0C',
+        inksurface: '#131315',
+        inkhover: '#1A1A1C',
+        bone: '#EDEAE4',
+        bonemuted: '#807D76',
+        gold: '#B8935A'
+      },
+      fontFamily: {
+        serif: ['Fraunces', 'serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { background:#0B0B0C; color:#EDEAE4; font-family: Inter, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .section-label { font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; color:#807D76; }
+  .hairline { border-color: rgba(255,255,255,0.06); }
+  a.quiet { color:#EDEAE4; text-decoration:none; border-bottom:1px solid transparent; transition:border-color .3s; }
+  a.quiet:hover { border-bottom-color:#B8935A; }
+  ::selection { background:#B8935A; color:#0B0B0C; }
+  .carousel-track { position:relative; width:100%; height:100%; overflow:hidden; }
+  .carousel-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .9s ease; }
+  .carousel-img.active { opacity:1; }
+  .dot { width:6px; height:6px; border-radius:9999px; background: rgba(255,255,255,0.18); transition:background .3s, transform .3s; }
+  .dot.active { background:#B8935A; transform: scale(1.3); }
+  .placeholder { background: linear-gradient(135deg, #131315 0%, #1A1A1C 100%); display:flex; align-items:center; justify-content:center; color:#3a3a3d; font-size:.75rem; letter-spacing:.25em; text-transform:uppercase; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="fixed top-0 inset-x-0 z-50 backdrop-blur-sm" style="background:rgba(11,11,12,0.85);">
+  <div class="max-w-6xl mx-auto px-6 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+    <a href="#" class="font-serif text-bone text-lg tracking-tight">Moph</a>
+    <div class="flex gap-6 text-sm text-bonemuted">
+      <a href="#work" class="hover:text-bone transition">Work</a>
+      <a href="#about" class="hover:text-bone transition">About</a>
+      <a href="#skills" class="hover:text-bone transition">Skills</a>
+      <a href="#contact" class="hover:text-bone transition">Contact</a>
+    </div>
+  </div>
+  <div class="hairline border-b"></div>
+</nav>
+
+<!-- HERO -->
+<header class="min-h-screen flex items-center px-6">
+  <div class="max-w-6xl mx-auto w-full pt-24">
+    <p class="section-label mb-8">Architect</p>
+    <h1 class="font-serif text-6xl md:text-8xl tracking-tight leading-[0.95] mb-10 text-bone">Moph</h1>
+    <p class="text-bonemuted text-lg md:text-xl leading-relaxed max-w-[52ch] mb-14">
+      I build software the way I build anything — measured twice, made to last.
+    </p>
+    <a href="#work" class="inline-block bg-gold text-inkbg px-8 py-4 text-sm tracking-wide hover:opacity-90 transition">
+      See the work
+    </a>
+  </div>
+</header>
+
+<!-- WORK -->
+<section id="work" class="px-6 py-32 md:py-52">
+  <div class="max-w-6xl mx-auto">
+    <p class="section-label mb-6">Selected Work</p>
+    <h2 class="font-serif text-4xl md:text-6xl tracking-tight mb-6 text-bone">Work</h2>
+    <p class="text-bonemuted mb-20 max-w-[52ch]">Things I have built. More coming.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14">
+
+      <!-- PROJECT CARD 1 -->
+      <article class="flex flex-col">
+        <div class="relative w-full aspect-[16/10] bg-inksurface hairline border rounded-lg overflow-hidden mb-6">
+          <div class="carousel-track" data-carousel>
+            <div class="carousel-img placeholder active">Screenshot 1</div>
+            <div class="carousel-img placeholder">Screenshot 2</div>
+            <div class="carousel-img placeholder">Screenshot 3</div>
+          </div>
+          <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 mb-3">
+          <h3 class="font-serif text-2xl text-bone tracking-tight">Moph Echo Mirror</h3>
+          <span class="inline-block w-2 h-2 rounded-full" style="background:#B8935A;"></span>
+        </div>
+        <p class="text-bonemuted text-sm leading-relaxed mb-4 max-w-[52ch]">
+          A mirror that listens. Built for reflection, not performance.
+        </p>
+        <a href="#" class="quiet text-sm inline-flex items-center gap-2">Visit →</a>
+      </article>
+
+      <!-- PROJECT CARD 2 -->
+      <article class="flex flex-col">
+        <div class="relative w-full aspect-[16/10] bg-inksurface hairline border rounded-lg overflow-hidden mb-6">
+          <div class="carousel-track">
+            <div class="carousel-img placeholder active">Screenshot 1</div>
+            <div class="carousel-img placeholder">Screenshot 2</div>
+          </div>
+          <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 mb-3">
+          <h3 class="font-serif text-2xl text-bone tracking-tight">Project Two</h3>
+        </div>
+        <p class="text-bonemuted text-sm leading-relaxed mb-4 max-w-[52ch]">
+          Placeholder card. Filled in later from admin.
+        </p>
+        <a href="#" class="quiet text-sm inline-flex items-center gap-2">Visit →</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="px-6 py-32 md:py-52">
+  <div class="max-w-6xl mx-auto">
+    <p class="section-label mb-6">About</p>
+    <h2 class="font-serif text-4xl md:text-6xl tracking-tight mb-16 text-bone">About</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-16">
+      <div class="md:col-span-2 space-y-6 text-bonemuted leading-relaxed max-w-[65ch]">
+        <p>I am Moph. I build software the way I build anything — slowly, with attention, measured twice.</p>
+        <p>Moph Echo Mirror came from a simple question — what would a mirror say if it could listen?</p>
+        <p>Building is a practice for me, spiritual as much as technical. Show up, work with your hands, make something honest. That is the whole of it.</p>
+      </div>
+      <div class="hidden md:block">
+        <div class="aspect-square w-full placeholder hairline border rounded-lg">Portrait</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="px-6 py-32 md:py-52">
+  <div class="max-w-6xl mx-auto">
+    <p class="section-label mb-6">Capability</p>
+    <h2 class="font-serif text-4xl md:text-6xl tracking-tight mb-20 text-bone">Skills</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-16">
+
+      <div>
+        <p class="section-label mb-6">Software</p>
+        <div class="text-bonemuted text-sm">
+          <div class="py-3">HTML, CSS, Tailwind CSS</div>
+          <div class="py-3 hairline border-t">Vanilla JavaScript</div>
+          <div class="py-3 hairline border-t">Supabase — Postgres, Storage, Auth</div>
+          <div class="py-3 hairline border-t">Vercel — hosting, serverless functions</div>
+          <div class="py-3 hairline border-t">REST API design and integration</div>
+          <div class="py-3 hairline border-t">Authentication flows</div>
+          <div class="py-3 hairline border-t">Responsive layout and typography</div>
+          <div class="py-3 hairline border-t">Debugging and reading other people's code</div>
+          <div class="py-3 hairline border-t">Git and version control</div>
+          <div class="py-3 hairline border-t">Writing documentation</div>
+        </div>
+      </div>
+
+      <div>
+        <p class="section-label mb-6">Craft</p>
+        <div class="text-bonemuted text-sm">
+          <div class="py-3">Carpentry and joinery</div>
+          <div class="py-3 hairline border-t">Finishing and repair</div>
+          <div class="py-3 hairline border-t">Hand tools, material knowledge</div>
+        </div>
+
+        <p class="section-label mb-6 mt-16">Field</p>
+        <div class="text-bonemuted text-sm">
+          <div class="py-3">Drone piloting — manual flight, framing, capture</div>
+          <div class="py-3 hairline border-t">Aerial photography and video</div>
+          <div class="py-3 hairline border-t">Site survey and mapping by drone</div>
+        </div>
+
+        <p class="section-label mb-6 mt-16">Working</p>
+        <div class="text-bonemuted text-sm">
+          <div class="py-3">Building alone, end to end</div>
+          <div class="py-3 hairline border-t">Writing and documentation</div>
+          <div class="py-3 hairline border-t">Contemplative practice</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="px-6 py-32 md:py-52">
+  <div class="max-w-6xl mx-auto">
+    <p class="section-label mb-6">Contact</p>
+    <h2 class="font-serif text-4xl md:text-6xl tracking-tight mb-10 text-bone">Contact</h2>
+    <p class="text-bonemuted mb-14 max-w-[52ch]">Write to me. I answer slowly, but I answer.</p>
+
+    <a href="mailto:ihedioranmapromise@gmail.com" class="font-serif text-2xl md:text-4xl text-bone quiet inline-block mb-10">
+      ihedioranmapromise@gmail.com
+    </a>
+
+    <p class="text-bonemuted text-sm mb-12">Aba, Nigeria</p>
+
+    <div class="flex flex-wrap gap-x-8 gap-y-3 text-sm text-bonemuted">
+      <a href="#" class="hover:text-bone transition">GitHub</a>
+      <a href="#" class="hover:text-bone transition">X</a>
+      <a href="#" class="hover:text-bone transition">TikTok</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="px-6 py-16 hairline border-t">
+  <div class="max-w-6xl mx-auto text-center text-xs text-bonemuted space-y-2">
+    <p>© 2026 Moph.</p>
+    <p class="text-gold">Built on rock.</p>
+  </div>
+</footer>
+
+<script>
+// Carousel — cross-fade through images every 4 seconds, pause on hover
+document.querySelectorAll('[data-carousel]').forEach(track => {
+  const imgs = track.querySelectorAll('.carousel-img');
+  const dots = track.parentElement.querySelectorAll('.dot');
+  if (imgs.length < 2) return;
+  let i = 0;
+  let timer;
+
+  const go = (n) => {
+    i = (n + imgs.length) % imgs.length;
+    imgs.forEach((im, k) => im.classList.toggle('active', k === i));
+    dots.forEach((d, k) => d.classList.toggle('active', k === i));
+  };
+
+  const start = () => { timer = setInterval(() => go(i + 1), 4000); };
+  const stop = () => { clearInterval(timer); };
+
+  track.parentElement.addEventListener('mouseenter', stop);
+  track.parentElement.addEventListener('mouseleave', start);
+  start();
+});
+</script>
+</body>
+</html>
