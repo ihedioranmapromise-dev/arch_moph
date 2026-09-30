@@ -14,19 +14,11 @@ tailwind.config = {
   theme: {
     extend: {
       colors: {
-        ink: '#0A0A0F',
-        surface: '#101014',
-        glass: '#14141A',
-        bone: '#F0EDE6',
-        muted: '#8A8780',
-        gold: '#C9A063',
-        amber: '#E5B067',
-        copper: '#B07A44'
+        ink: '#0A0A0F', surface: '#101014', glass: '#14141A',
+        bone: '#F0EDE6', muted: '#8A8780',
+        gold: '#C9A063', amber: '#E5B067', copper: '#B07A44'
       },
-      fontFamily: {
-        serif: ['Fraunces', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif']
-      }
+      fontFamily: { serif: ['Fraunces', 'serif'], sans: ['Inter', 'system-ui', 'sans-serif'] }
     }
   }
 }
@@ -34,13 +26,10 @@ tailwind.config = {
 <style>
   html { scroll-behavior: smooth; }
   body {
-    background:#0A0A0F;
-    color:#F0EDE6;
-    font-family: Inter, system-ui, sans-serif;
-    font-weight: 300;
+    background:#0A0A0F; color:#F0EDE6;
+    font-family: Inter, system-ui, sans-serif; font-weight: 300;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    letter-spacing: 0.005em;
+    overflow-x: hidden; letter-spacing: 0.005em;
   }
   img, video, svg { display: block; max-width: 100%; }
 
@@ -90,7 +79,6 @@ tailwind.config = {
   .eyebrow .line.right {
     background: linear-gradient(90deg, #C9A063, transparent);
   }
-
   .display {
     font-family: Fraunces, serif; font-weight: 400;
     letter-spacing: -0.022em; line-height: 1.02; color: #F0EDE6;
@@ -107,7 +95,6 @@ tailwind.config = {
     0%, 100% { background-position: 0% 50%; }
     50%      { background-position: 100% 50%; }
   }
-
   .hero-name {
     background: linear-gradient(110deg,
       #F0EDE6 0%, #F0EDE6 38%,
@@ -122,7 +109,6 @@ tailwind.config = {
     0%, 100% { background-position: 130% 50%; }
     50%      { background-position: -30% 50%; }
   }
-
   .rule {
     display: block; height: 1px; width: 0;
     background: linear-gradient(90deg, #C9A063, rgba(201,160,99,0));
@@ -135,7 +121,6 @@ tailwind.config = {
     transition: opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1);
   }
   .reveal.in { opacity: 1; transform: none; }
-
   .reveal-stagger > * {
     opacity: 0; transform: translateY(16px);
     transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
@@ -159,8 +144,7 @@ tailwind.config = {
 
   nav {
     transition: background .35s ease, border-color .35s ease, backdrop-filter .35s ease;
-    background: transparent;
-    border-bottom: 1px solid transparent;
+    background: transparent; border-bottom: 1px solid transparent;
   }
   nav.scrolled {
     background: rgba(10,10,15,0.85);
@@ -198,6 +182,8 @@ tailwind.config = {
     border: 1px solid rgba(255,255,255,0.08);
     color: #F0EDE6;
     transition: border-color .3s, background .3s, color .3s, transform .3s;
+    position: relative;
+    z-index: 62;
   }
   .menu-btn:hover { border-color: rgba(201,160,99,0.55); color: #E5B067; background: rgba(20,20,26,1); }
   .menu-btn:active { transform: scale(.96); }
@@ -205,41 +191,93 @@ tailwind.config = {
   .menu-btn .dots circle { transition: fill .3s; }
   .menu-btn:hover .dots circle { fill: #E5B067; }
 
-  .mobile-menu {
+  /* ---------- RIGHT DRAWER ---------- */
+  .drawer-overlay {
     position: fixed; inset: 0;
-    background: rgba(10,10,15,0.98);
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    transform: translateY(-100%);
-    transition: transform .5s cubic-bezier(.22,1,.36,1);
-    z-index: 55; padding: 5.5rem 1.5rem 2rem; overflow-y: auto;
+    background: rgba(5,5,8,0.55);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .45s cubic-bezier(.22,1,.36,1);
+    z-index: 58;
   }
-  .mobile-menu.open { transform: translateY(0); }
-  .mobile-menu a {
+  .drawer-overlay.open { opacity: 1; pointer-events: auto; }
+
+  .drawer {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 78%;
+    max-width: 380px;
+    background: rgba(14,14,19,0.82);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    border-left: 1px solid rgba(255,255,255,0.07);
+    transform: translateX(100%);
+    transition: transform .55s cubic-bezier(.22,1,.36,1);
+    z-index: 60;
+    padding: 5.5rem 1.75rem 2rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer-glow {
+    position: absolute;
+    top: -20%; right: -30%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,160,99,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .drawer-links { display: flex; flex-direction: column; }
+  .drawer-links a {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 1rem 0;
-    font-family: Fraunces, serif; font-size: 1.55rem;
+    padding: 1.05rem 0;
+    font-family: Fraunces, serif;
+    font-size: 1.5rem;
     color: #F0EDE6;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
     transition: color .3s, padding-left .35s cubic-bezier(.22,1,.36,1);
+    text-decoration: none;
+    position: relative;
   }
-  .mobile-menu a:last-child { border-bottom: none; }
-  .mobile-menu a:hover { color: #E5B067; padding-left: 8px; }
-  .mobile-menu a .arrow {
+  .drawer-links a:last-child { border-bottom: none; }
+  .drawer-links a:hover,
+  .drawer-links a:active { color: #E5B067; padding-left: 8px; }
+  .drawer-links a .arrow {
     width: 18px; height: 18px; color: #8A8780;
     transition: transform .35s cubic-bezier(.22,1,.36,1), color .3s;
   }
-  .mobile-menu a:hover .arrow { transform: translateX(4px); color: #E5B067; }
-  .mobile-menu .menu-close {
-    position: absolute; top: 1.1rem; right: 1.5rem;
-    width: 42px; height: 42px; border-radius: 12px;
+  .drawer-links a:hover .arrow { transform: translateX(4px); color: #E5B067; }
+  .drawer-close {
+    position: absolute; top: 1.1rem; right: 1.35rem;
+    width: 40px; height: 40px; border-radius: 12px;
     background: rgba(20,20,26,0.9);
     border: 1px solid rgba(255,255,255,0.08);
     color: #F0EDE6;
     display: inline-flex; align-items: center; justify-content: center;
-    transition: border-color .3s, color .3s;
+    transition: border-color .3s, color .3s, background .3s;
+    cursor: pointer;
   }
-  .mobile-menu .menu-close:hover { border-color: rgba(201,160,99,0.6); color: #E5B067; }
-  .mobile-menu .menu-close svg { width: 16px; height: 16px; }
+  .drawer-close:hover { border-color: rgba(201,160,99,0.6); color: #E5B067; }
+  .drawer-close svg { width: 15px; height: 15px; }
+  .drawer-foot {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: .7rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: #8A8780;
+  }
+  .drawer-foot .dot-line {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: .5rem;
+  }
+  .drawer-foot .dot-line .dot {
+    width: 5px; height: 5px; border-radius: 9999px;
+    background: #C9A063;
+  }
 
   .quiet {
     position: relative; color: #F0EDE6; text-decoration: none;
@@ -263,7 +301,7 @@ tailwind.config = {
     color: #0A0A0F; font-size: .82rem; font-weight: 500;
     letter-spacing: .06em; text-transform: uppercase;
     transition: transform .3s cubic-bezier(.22,1,.36,1), box-shadow .4s ease;
-    box-shadow: 0 8px 24px rgba(201,160,99,0.2), 0 0 0 1px rgba(201,160,99,0.1) inset;
+    box-shadow: 0 8px 24px rgba(201,160,99,0.2);
   }
   .btn-primary::before {
     content: ""; position: absolute; top: 0; left: -120%;
@@ -274,7 +312,7 @@ tailwind.config = {
   }
   .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 14px 34px rgba(201,160,99,0.32), 0 0 0 1px rgba(201,160,99,0.15) inset;
+    box-shadow: 0 14px 34px rgba(201,160,99,0.32);
   }
   .btn-primary:hover::before { left: 130%; }
   .btn-primary svg { width: 14px; height: 14px; }
@@ -346,7 +384,6 @@ tailwind.config = {
   .card:hover .card-media .placeholder { transform: scale(1.035); }
 
   .card-body { padding: 1.35rem 1.35rem 1.5rem; }
-
   .card-head {
     display: flex; align-items: flex-start; justify-content: space-between;
     gap: 12px; margin-bottom: .9rem;
@@ -449,6 +486,35 @@ tailwind.config = {
     z-index: 2;
   }
 
+  /* ---------- PORTRAIT (about) ---------- */
+  .portrait-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  .portrait-frame {
+    width: 55%;
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+    position: relative;
+  }
+  .portrait-frame img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: block;
+  }
+  .portrait-frame .placeholder {
+    background: linear-gradient(135deg, #0E0E13 0%, #14141A 55%, #0E0E13 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: #4a4a4d; font-size: .62rem; letter-spacing: .3em;
+    text-transform: uppercase; width: 100%; height: 100%;
+  }
+  @media (min-width: 768px) {
+    .portrait-wrap { margin-top: 0; display: block; }
+    .portrait-frame { width: 100%; border-radius: 20px; }
+  }
+
   .skills-block {
     display: grid; grid-template-columns: 1fr; gap: 1.25rem;
   }
@@ -489,7 +555,7 @@ tailwind.config = {
   }
   .skill-row {
     position: relative;
-    padding: .55rem 0 .55rem 0;
+    padding: .55rem 0;
     color: #6f6c66;
     font-size: .85rem;
     font-weight: 300;
@@ -598,6 +664,8 @@ tailwind.config = {
       opacity: 1 !important; transform: none !important;
     }
     .rule { width: 88px !important; }
+    .drawer { transition: none !important; }
+    .drawer-overlay { transition: none !important; }
     html { scroll-behavior: auto; }
   }
 </style>
@@ -632,15 +700,24 @@ tailwind.config = {
   </div>
 </nav>
 
-<div id="mobile-menu" class="mobile-menu md:hidden">
-  <button id="menu-close" class="menu-close" aria-label="Close">
+<!-- RIGHT DRAWER -->
+<div id="drawer-overlay" class="drawer-overlay md:hidden"></div>
+<aside id="drawer" class="drawer md:hidden" aria-hidden="true">
+  <div class="drawer-glow"></div>
+  <button id="drawer-close" class="drawer-close" aria-label="Close menu">
     <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
   </button>
-  <a href="work.html">Work <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-  <a href="#about">About <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-  <a href="#skills">Skills <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-  <a href="#contact">Contact <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-</div>
+  <div class="drawer-links">
+    <a href="work.html">Work <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#about">About <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#skills">Skills <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#contact">Contact <svg class="arrow" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </div>
+  <div class="drawer-foot">
+    <div>Moph</div>
+    <div class="dot-line"><span class="dot"></span><span>Aba, Nigeria</span></div>
+  </div>
+</aside>
 
 <header class="px-5 pt-20 pb-8 md:pt-28 md:pb-12">
   <div class="max-w-6xl mx-auto hero-in" id="hero-block">
@@ -806,8 +883,12 @@ tailwind.config = {
         <p>Moph Echo Mirror came from a simple question — what would a mirror say if it could listen?</p>
         <p>Building is a practice for me, spiritual as much as technical. Show up, work with your hands, make something honest. That is the whole of it.</p>
       </div>
-      <div class="hidden md:block">
-        <div class="aspect-square w-full placeholder rounded-2xl border border-white/5">Portrait</div>
+      <div>
+        <div class="portrait-wrap">
+          <div class="portrait-frame">
+            <div class="placeholder">Portrait</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1013,15 +1094,23 @@ window.addEventListener('scroll', () => {
 updateNav();
 
 const menuBtn = document.getElementById('menu-toggle');
-const menuClose = document.getElementById('menu-close');
-const menuPanel = document.getElementById('mobile-menu');
-const setMenu = (open) => {
-  menuPanel.classList.toggle('open', open);
+const drawer = document.getElementById('drawer');
+const drawerClose = document.getElementById('drawer-close');
+const drawerOverlay = document.getElementById('drawer-overlay');
+
+const setDrawer = (open) => {
+  drawer.classList.toggle('open', open);
+  drawerOverlay.classList.toggle('open', open);
+  drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
   document.body.style.overflow = open ? 'hidden' : '';
 };
-menuBtn.addEventListener('click', () => setMenu(true));
-menuClose.addEventListener('click', () => setMenu(false));
-menuPanel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+menuBtn.addEventListener('click', () => setDrawer(!drawer.classList.contains('open')));
+drawerClose.addEventListener('click', () => setDrawer(false));
+drawerOverlay.addEventListener('click', () => setDrawer(false));
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setDrawer(false)));
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && drawer.classList.contains('open')) setDrawer(false);
+});
 
 window.addEventListener('load', () => {
   document.getElementById('hero-block').classList.add('in');
