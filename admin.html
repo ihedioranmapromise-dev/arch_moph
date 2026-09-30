@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — Moph</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        ink: '#0A0A0F', surface: '#101014', glass: '#14141A',
+        bone: '#F0EDE6', muted: '#8A8780',
+        gold: '#C9A063', amber: '#E5B067', copper: '#B07A44'
+      },
+      fontFamily: { serif: ['Fraunces', 'serif'], sans: ['Inter', 'system-ui', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    background: #0A0A0F; color: #F0EDE6;
+    font-family: Inter, system-ui, sans-serif; font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden; letter-spacing: 0.005em;
+  }
+  img, video, svg { display: block; max-width: 100%; }
+
+  .bg-glow {
+    position: fixed; top: -40%; left: 50%; transform: translateX(-50%);
+    width: 1000px; height: 1000px;
+    background: radial-gradient(circle, rgba(201,160,99,0.09) 0%, transparent 65%);
+    pointer-events: none; z-index: 0;
+  }
+
+  label { display: block; font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: #8A8780; margin-bottom: 8px; }
+  input[type=text], input[type=email], input[type=url], input[type=tel], textarea, select {
+    width: 100%; background: #0E0E13; border: 1px solid rgba(255,255,255,0.08);
+    color: #F0EDE6; padding: .7rem .9rem; border-radius: 10px;
+    font-family: inherit; font-size: .88rem; font-weight: 300;
+    transition: border-color .25s, background .25s;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none; border-color: rgba(201,160,99,0.6); background: #101015;
+  }
+  textarea { min-height: 110px; resize: vertical; font-family: inherit; line-height: 1.6; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: .68rem 1.2rem; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(20,20,26,0.7); color: #F0EDE6;
+    font-family: inherit; font-size: .82rem; font-weight: 400;
+    letter-spacing: .04em; cursor: pointer;
+    transition: border-color .25s, background .25s, color .25s, transform .15s;
+  }
+  .btn:hover { border-color: rgba(255,255,255,0.22); background: rgba(24,24,30,0.9); }
+  .btn:active { transform: scale(.98); }
+  .btn-gold {
+    background: linear-gradient(135deg, #E5B067 0%, #C9A063 55%, #B07A44 100%);
+    color: #0A0A0F; border-color: transparent; font-weight: 500;
+  }
+  .btn-gold:hover { box-shadow: 0 8px 22px rgba(201,160,99,0.28); }
+  .btn-sm { padding: .42rem .7rem; font-size: .75rem; border-radius: 7px; }
+  .btn-danger { color: #d18686; border-color: rgba(209,134,134,0.28); }
+  .btn-danger:hover { border-color: rgba(209,134,134,0.6); background: rgba(209,134,134,0.06); }
+  .btn-ghost { background: transparent; border-color: rgba(201,160,99,0.35); color: #E5B067; }
+  .btn-ghost:hover { background: rgba(201,160,99,0.08); border-color: #C9A063; color: #F0EDE6; }
+
+  .card {
+    background: linear-gradient(180deg, rgba(20,20,26,0.85) 0%, rgba(16,16,20,0.75) 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px; padding: 1.35rem 1.3rem;
+  }
+
+  .section-label {
+    font-size: .66rem; letter-spacing: .3em; text-transform: uppercase;
+    color: #8A8780; font-weight: 400;
+  }
+
+  .field { margin-bottom: 1.1rem; }
+
+  .row { display: flex; gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+  .row:first-child { border-top: none; }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px; border-radius: 999px;
+    background: rgba(201,160,99,0.1); border: 1px solid rgba(201,160,99,0.3);
+    color: #E5B067; font-size: .7rem; letter-spacing: .08em;
+  }
+
+  .thumb {
+    width: 92px; height: 68px; object-fit: cover;
+    border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);
+    background: #0E0E13;
+  }
+
+  .toast {
+    font-size: .78rem; letter-spacing: .04em;
+    padding: 4px 0; min-height: 1.2rem;
+    transition: opacity .35s;
+  }
+  .toast.ok { color: #C9A063; }
+  .toast.err { color: #d18686; }
+
+  /* sidebar */
+  .sidebar-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: .65rem .85rem; border-radius: 9px;
+    color: #8A8780; font-size: .85rem;
+    text-decoration: none;
+    transition: color .25s, background .25s;
+    cursor: pointer;
+  }
+  .sidebar-link:hover { color: #F0EDE6; background: rgba(255,255,255,0.03); }
+  .sidebar-link.active { color: #E5B067; background: rgba(201,160,99,0.08); }
+  .sidebar-link svg { width: 16px; height: 16px; }
+
+  /* gate */
+  .gate-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(6,6,9,0.97);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+  }
+  .gate-box {
+    width: 100%; max-width: 380px;
+    background: linear-gradient(180deg, rgba(20,20,26,0.9) 0%, rgba(16,16,20,0.85) 100%);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px; padding: 2rem;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8);
+  }
+  .gate-box h1 {
+    font-family: Fraunces, serif; font-weight: 400;
+    font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 1.5rem;
+  }
+  .gate-mark {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(201,160,99,0.18) 0%, rgba(176,122,68,0.08) 100%);
+    border: 1px solid rgba(201,160,99,0.35);
+    font-family: Fraunces, serif; font-weight: 500; font-size: 20px;
+    color: #E5B067; letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+  }
+
+  .switch { position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
+  .switch input { display: none; }
+  .switch .track {
+    width: 40px; height: 22px; border-radius: 999px;
+    background: #1a1a1e; border: 1px solid rgba(255,255,255,0.1);
+    transition: background .25s, border-color .25s;
+    position: relative;
+  }
+  .switch .track::after {
+    content: ""; position: absolute; top: 3px; left: 3px;
+    width: 14px; height: 14px; border-radius: 999px;
+    background: #6f6c66; transition: transform .25s, background .25s;
+  }
+  .switch input:checked + .track {
+    background: #C9A063; border-color: #C9A063;
+  }
+  .switch input:checked + .track::after {
+    transform: translateX(18px); background: #0A0A0F;
+  }
+  .switch .lbl { font-size: .78rem; letter-spacing: .04em; color: #8A8780; }
+
+  .icon-tile {
+    width: 34px; height: 34px; border-radius: 9px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(201,160,99,0.14) 0%, rgba(176,122,68,0.04) 100%);
+    border: 1px solid rgba(201,160,99,0.28);
+    color: #E5B067; flex-shrink: 0;
+  }
+  .icon-tile svg { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<!-- GATE -->
+<div id="gate" class="gate-overlay">
+  <div class="gate-box">
+    <div class="gate-mark">M</div>
+    <h1>Admin</h1>
+    <label for="key-input">Admin key</label>
+    <input id="key-input" type="password" placeholder="Enter key" autocomplete="current-password">
+    <button id="key-btn" class="btn btn-gold" style="width:100%; margin-top: 1.25rem; justify-content: center;">
+      Unlock
+    </button>
+    <p id="gate-error" class="toast err" style="margin-top: .75rem;"></p>
+  </div>
+</div>
+
+<!-- SHELL -->
+<div id="shell" style="display:none;">
+  <div class="flex min-h-screen relative z-10">
+
+    <aside class="hidden md:flex w-60 shrink-0 border-r border-white/5 p-5 sticky top-0 h-screen flex-col" style="border-color:rgba(255,255,255,0.05);">
+      <div class="mb-8 flex items-center gap-3">
+        <span class="icon-tile" style="width:38px;height:38px;font-family:Fraunces,serif;font-size:16px;">M</span>
+        <div>
+          <div class="section-label">Admin</div>
+          <div style="font-family: Fraunces, serif; font-size: 1.05rem;">Moph</div>
+        </div>
+      </div>
+
+      <nav class="space-y-1 flex-1">
+        <a class="sidebar-link" data-target="sec-hero">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4h12l4 4v12z"/><path d="M8 10h8M8 14h8M8 18h4"/></svg>
+          Hero
+        </a>
+        <a class="sidebar-link" data-target="sec-about">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+          About
+        </a>
+        <a class="sidebar-link" data-target="sec-skills">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+          Skills
+        </a>
+        <a class="sidebar-link" data-target="sec-projects">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M8 15h4"/></svg>
+          Projects
+        </a>
+        <a class="sidebar-link" data-target="sec-drone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M5 5l4 4M15 15l4 4M19 5l-4 4M9 15l-4 4"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/></svg>
+          Drone
+        </a>
+        <a class="sidebar-link" data-target="sec-contact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          Contact
+        </a>
+        <a class="sidebar-link" data-target="sec-meta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M21 12h-3M12 21v-3M3 12h3"/></svg>
+          Meta
+        </a>
+      </nav>
+
+      <div class="mt-4 pt-4 space-y-1" style="border-top: 1px solid rgba(255,255,255,0.06);">
+        <a href="/" class="sidebar-link" target="_blank">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>
+          View site
+        </a>
+        <a id="logout" class="sidebar-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+          Sign out
+        </a>
+      </div>
+    </aside>
+
+    <main class="flex-1 px-5 md:px-10 py-8 max-w-3xl">
+
+      <!-- HERO -->
+      <section id="sec-hero" class="mb-14 scroll-mt-8">
+        <div class="section-label mb-2">Hero</div>
+        <h2 style="font-family:Fraunces,serif;font-size:1.6rem;margin-bottom:1.25rem;letter-spacing:-0.02em;">Hero</div>
+        <div class="card space-y-1">
+          <div class="field">
+            <label>Name</label>
+            <input id="hero-name" type="text">
+          </div>
+          <div class="field">
+            <label>Line</label>
+            <textarea id="hero-line"></textarea>
+          </div>
+          <div class="field">
+            <label>Action label</label>
+            <input id="hero-action" type="text">
+          </div>
+
+          <div class="field" style="margin-top:1.5rem;">
+            <label>Stats row</label>
+            <p style="font-size:.78rem;color:#6f6c66;margin-bottom:.75rem;font-weight:300;">
+              The three small figures under the buttons. Add or remove as you like.
+            </p>
+            <div id="stats-list"></div>
+            <button id="add-stat" class="btn btn-sm btn-ghost" style="margin-top:.6rem;">+ Add stat</button>
+          </div>
+
+          <div class="flex items-center gap-3" style="margin-top:1rem;">
+            <button class="btn btn-gold" data-save="hero">Save hero</button>
+            <span class="toast" data-toast="hero"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="sec-about" class="mb-14 scroll-mt-8">
+        <div class="section-label mb-2">About</div>
+        <h2 style="font-family:Fraunces,serif;font-size:1.6rem;margin-bottom:1.25rem;letter-spacing:-0.02em;">About</h2>
+        <div class="card space-y-1">
+          <div class="field">
+            <label>Body — one paragraph per blank line</label>
+            <textarea id="about-body" style="min-height:200px;"></textarea>
+          </div>
+          <div class="field">
+            <label>Portrait image</label>
+            <div id="portrait-preview" style="margin-bottom:.75rem;"></div>
+            <button id="portrait-upload" class="btn btn-sm btn-ghost">Upload portrait</button>
+            <input id="portrait-file" type="file" accept="image/*" style="display:none;">
+          </div>
+          <div class="flex items-center gap-3" style="margin-top:1rem;">
+            <button class="btn btn-gold" data-save="about">Save about</button>
+            <span class="toast" data-toast="about"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="sec-skills" class="mb-14 scroll-mt-8">
+        <div class="section-label mb-2">Skills</div>
+        <h2 style="font-family:Fraunces,serif;font-size:1.6rem;margin-bottom:1.25rem;letter-spacing:-0.02em;">Skills</h2>
+        <div id="skills-list" class="space-y-4"></div>
+        <button id="add-skill-group" class="btn btn-sm btn-ghost" style="margin-top:1rem;">+ Add group</button>
+        <div class="flex items-center gap-3" style="margin-top:1.25rem;">
+          <button class="btn btn-gold" data-save="skills">Save all skills</button>
+          <span class="toast" data-toast="skills"></span>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section id="sec-projects" class="mb-14 scroll-mt-8">
+        <div class="section-label mb-2">Projects</div>
+        <h2 style="font-family:Fraunces,serif;font-size:1.6rem;margin-bottom:.5rem;letter-spacing:-0.02em;">Software projects</h2>
+        <p style="font-size:.82rem;color:#6f6c66;margin-bottom:1.25rem;font-weight:300;">
+          Each project card on the Work page.
+        </p>
+        <div id="projects-list" class="space-y-4"></div>
+        <button id="add-project" class="btn btn-sm btn-ghost" style="margin-top:1rem;">+ Add project</button>
+      </section>
+
+      <!-- DRONE -->
+      <section id="sec-drone" class="mb-14 scroll-mt-8">
+        <div class="section-label mb-2">Drone</div>
+        <h2 style="font-family:Fraunces,serif;font-size:1.6rem;margin-bottom:.5rem;letter-spacing:-0.02em;">Drone slots</h2>
+        <p style="font-size:.82rem;color:#6f6c66;margin-bottom:1.25rem;font-weight:300;">
+          Video slots for the Work page. Upload the video file directly. Add as many as you like — one, two, or none.
+        </p>
+        <div id="drone-list" class="space-y-4"></div>
+        <button id="add-drone" class="btn btn-sm btn-ghost" style="margin-top:1rem;">+ Add drone slot</button>
+      </section>
+
+      <!-- CONTACT -->
+      <section id="sec-contact" class="mb-14 scroll-mt-8">
+        <div class="section-label mb-2">Contact</div>
+        <h2 style="font-family:Fraunces,serif;font-size:1.6rem;margin-bottom:1.25rem;letter-spacing:-0.02em;">Contact</h2>
+        <div class="card space-y-1">
+          <div class="field">
+            <label>Email</label>
+            <input id="contact-email" type="email">
+          </div>
+          <div class="field">
+            <label>Location</label>
+            <input id="contact-location" type="text">
+          </div>
+          <div class="field">
+            <label>WhatsApp number (digits only, with country code)</label>
+            <input id="contact-whatsapp" type="tel" placeholder="2349161919164">
+          </div>
+          <div class="field">
+            <label>Socials</label>
+            <div id="socials-list"></div>
+            <button id="add-social" class="btn btn-sm btn-ghost" style="margin-top:.6rem;">+ Add social</button>
+          </div>
+          <div class="flex items-center gap-3" style="margin-top:1rem;">
+            <button class="btn btn-gold" data-save="contact">Save contact</button>
+            <span class="toast" data-toast="contact"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- META -->
+      <section id="sec-meta" class="mb-14 scroll-mt-8">
+        <div class="section-label mb-2">Meta</div>
+        <h2 style="font-family:Fraunces,serif;font-size:1.6rem;margin-bottom:1.25rem;letter-spacing:-0.02em;">Meta</h2>
+        <div class="card space-y-1">
+          <div class="field">
+            <label>Site title</label>
+            <input id="meta-title" type="text" placeholder="Moph">
+          </div>
+          <div class="field">
+            <label>Meta description</label>
+            <textarea id="meta-description"></textarea>
+          </div>
+          <div class="field">
+            <label>Footer line</label>
+            <input id="footer-line" type="text" placeholder="Built on rock.">
+          </div>
+          <div class="field">
+            <label>Favicon</label>
+            <div id="favicon-preview" style="margin-bottom:.75rem;"></div>
+            <button id="favicon-upload" class="btn btn-sm btn-ghost">Upload favicon</button>
+            <input id="favicon-file" type="file" accept="image/*" style="display:none;">
+          </div>
+          <div class="field">
+            <label>OG image (share preview)</label>
+            <div id="og-preview" style="margin-bottom:.75rem;"></div>
+            <button id="og-upload" class="btn btn-sm btn-ghost">Upload OG image</button>
+            <input id="og-file" type="file" accept="image/*" style="display:none;">
+          </div>
+          <div class="flex items-center gap-3" style="margin-top:1rem;">
+            <button class="btn btn-gold" data-save="meta">Save meta</button>
+            <span class="toast" data-toast="meta"></span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let KEY = sessionStorage.getItem('mm_admin_key') || '';
+let state = { content: {}, projects: [], drone: [], meta: {} };
+
+/* ---------- API ---------- */
+async function api(action, payload = {}) {
+  const res = await fetch('/api/site', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-admin-key': KEY },
+    body: JSON.stringify({ action, ...payload })
+  });
+  const data = await res.json().catch(() => ({}));
+  if (res.status === 401) {
+    sessionStorage.removeItem('mm_admin_key');
+    KEY = '';
+    showGate();
+    throw new Error('Unauthorized');
+  }
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+async function fetchAll() {
+  const res = await fetch('/api/site', { headers: { 'x-admin-key': KEY } });
+  if (res.status === 401) throw new Error('Unauthorized');
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error);
+  return data;
+}
+
+/* ---------- UPLOAD ---------- */
+async function uploadFile(file, folder) {
+  const { signedUrl, publicUrl } = await api('sign_upload', {
+    filename: file.name, folder
+  });
+  const put = await fetch(signedUrl, {
+    method: 'PUT',
+    headers: { 'Content-Type': file.type || 'application/octet-stream' },
+    body: file
+  });
+  if (!put.ok) throw new Error('Upload failed');
+  return publicUrl;
+}
+
+/* ---------- UI ---------- */
+function toast(name, msg, ok = true) {
+  const t = document.querySelector(`[data-toast="${name}"]`);
+  if (!t) return;
+  t.textContent = msg;
+  t.className = 'toast ' + (ok ? 'ok' : 'err');
+  clearTimeout(t._tm);
+  t._tm = setTimeout(() => { t.textContent = ''; }, 3500);
+}
+
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---------- GATE ---------- */
+function showGate() {
+  $('gate').style.display = 'flex';
+  $('shell').style.display = 'none';
+}
+function hideGate() {
+  $('gate').style.display = 'none';
+  $('shell').style.display = 'block';
+}
+$('key-btn').addEventListener('click', tryUnlock);
+$('key-input').addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+
+async function tryUnlock() {
+  const v = $('key-input').value.trim();
+  if (!v) return;
+  $('gate-error').textContent = '';
+  KEY = v;
+  sessionStorage.setItem('mm_admin_key', v);
+  try {
+    await loadAll();
+    hideGate();
+  } catch (e) {
+    $('gate-error').textContent = 'Wrong key or server unreachable.';
+    sessionStorage.removeItem('mm_admin_key');
+    KEY = '';
+  }
+}
+
+$('logout').addEventListener('click', () => {
+  sessionStorage.removeItem('mm_admin_key');
+  location.reload();
+});
+
+/* ---------- SIDEBAR ---------- */
+document.querySelectorAll('.sidebar-link[data-target]').forEach(a => {
+  a.addEventListener('click', () => {
+    const el = document.getElementById(a.dataset.target);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.sidebar-link').forEach(x => x.classList.remove('active'));
+    a.classList.add('active');
+  });
+});
+
+/* ---------- LOAD ---------- */
+async function loadAll() {
+  const data = await fetchAll();
+  state = data;
+
+  // Hero
+  $('hero-name').value = state.content['hero.name'] || '';
+  $('hero-line').value = state.content['hero.line'] || '';
+  $('hero-action').value = state.content['hero.action_label'] || '';
+  renderStats(state.content['hero.stats'] || defaultStats());
+
+  // About
+  $('about-body').value = state.content['about.body'] || '';
+  renderPortrait(state.content['about.portrait_url']);
+
+  // Skills
+  renderSkills(state.content['skills'] || defaultSkills());
+
+  // Projects
+  renderProjects(state.projects || []);
+
+  // Drone
+  renderDrone(state.drone || []);
+
+  // Contact
+  $('contact-email').value = state.content['contact.email'] || '';
+  $('contact-location').value = state.content['contact.location'] || '';
+  $('contact-whatsapp').value = state.content['contact.whatsapp'] || '';
+  renderSocials(state.content['contact.socials'] || []);
+
+  // Meta
+  $('meta-title').value = state.meta['title'] || '';
+  $('meta-description').value = state.meta['description'] || '';
+  $('footer-line').value = state.content['footer.line'] || '';
+  renderFavicon(state.meta['favicon_url']);
+  renderOg(state.meta['og_image_url']);
+}
+
+function defaultStats() {
+  return [
+    { num: '01', label: 'Live project' },
+    { num: '04', label: 'Disciplines' },
+    { num: 'Aba', label: 'Based in' }
+  ];
+}
+function defaultSkills() {
+  return [
+    { group: 'Software', items: [
+      'HTML, CSS, Tailwind CSS', 'Vanilla JavaScript',
+      'Supabase — Postgres, Storage, Auth', 'Vercel — hosting, serverless functions',
+      'REST API design and integration', 'Authentication flows',
+      'Responsive layout and typography', 'Debugging and reading other people\'s code',
+      'Git and version control', 'Writing documentation'
+    ]},
+    { group: 'Craft', items: ['Carpentry and joinery', 'Finishing and repair', 'Hand tools, material knowledge'] },
+    { group: 'Field', items: ['Drone piloting — manual flight, framing, capture', 'Aerial photography and video', 'Site survey and mapping by drone'] },
+    { group: 'Working', items: ['Building alone, end to end', 'Writing and documentation', 'Contemplative practice'] }
+  ];
+}
+
+/* ---------- STATS ---------- */
+function renderStats(stats) {
+  const box = $('stats-list');
+  box.innerHTML = '';
+  stats.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `
+      <input type="text" data-stat-num="${i}" value="${esc(s.num)}" placeholder="01" style="width:70px; flex-shrink:0;">
+      <input type="text" data-stat-label="${i}" value="${esc(s.label)}" placeholder="Label">
+      <button class="btn btn-sm btn-danger" data-del-stat="${i}">×</button>
+    `;
+    box.appendChild(row);
+  });
+  box.querySelectorAll('[data-del-stat]').forEach(b => b.addEventListener('click', () => {
+    const arr = collectStats();
+    arr.splice(parseInt(b.dataset.delStat, 10), 1);
+    renderStats(arr);
+  }));
+}
+function collectStats() {
+  const out = [];
+  document.querySelectorAll('[data-stat-num]').forEach((inp, i) => {
+    const lbl = document.querySelector(`[data-stat-label="${i}"]`);
+    out.push({ num: inp.value, label: lbl ? lbl.value : '' });
+  });
+  return out;
+}
+$('add-stat').addEventListener('click', () => {
+  const arr = collectStats();
+  arr.push({ num: '', label: '' });
+  renderStats(arr);
+});
+
+/* ---------- PORTRAIT ---------- */
+$('portrait-upload').addEventListener('click', () => $('portrait-file').click());
+$('portrait-file').addEventListener('change', async (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  try {
+    $('portrait-upload').textContent = 'Uploading…';
+    const url = await uploadFile(f, 'portrait');
+    await api('save_content', { key: 'about.portrait_url', value: url });
+    renderPortrait(url);
+    toast('about', 'Portrait uploaded.');
+  } catch (err) {
+    toast('about', err.message, false);
+  } finally {
+    $('portrait-upload').textContent = 'Upload portrait';
+    e.target.value = '';
+  }
+});
+function renderPortrait(url) {
+  const box = $('portrait-preview');
+  box.innerHTML = '';
+  if (!url) return;
+  const img = document.createElement('img');
+  img.src = url;
+  img.className = 'thumb';
+  img.style.width = '100px';
+  img.style.height = '100px';
+  box.appendChild(img);
+}
+
+/* ---------- SKILLS ---------- */
+function renderSkills(skills) {
+  const box = $('skills-list');
+  box.innerHTML = '';
+  skills.forEach((g, gi) => box.appendChild(skillGroupNode(g, gi)));
+}
+function skillGroupNode(group, gi) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="flex items-center gap-2" style="margin-bottom:.9rem;">
+      <input type="text" data-group-name="${gi}" value="${esc(group.group || '')}" placeholder="Group name" style="flex:1;">
+      <button class="btn btn-sm" data-group-up="${gi}">↑</button>
+      <button class="btn btn-sm" data-group-down="${gi}">↓</button>
+      <button class="btn btn-sm btn-danger" data-group-del="${gi}">Delete</button>
+    </div>
+    <div data-items="${gi}"></div>
+    <button class="btn btn-sm btn-ghost" data-add-item="${gi}" style="margin-top:.6rem;">+ Add item</button>
+  `;
+  const itemsBox = card.querySelector(`[data-items="${gi}"]`);
+  (group.items || []).forEach((it, ii) => itemsBox.appendChild(skillItemNode(it, gi, ii)));
+  return card;
+}
+function skillItemNode(text, gi, ii) {
+  const row = document.createElement('div');
+  row.className = 'row';
+  row.innerHTML = `
+    <input type="text" data-item="${gi}:${ii}" value="${esc(text)}" placeholder="Skill">
+    <button class="btn btn-sm" data-item-up="${gi}:${ii}">↑</button>
+    <button class="btn btn-sm" data-item-down="${gi}:${ii}">↓</button>
+    <button class="btn btn-sm btn-danger" data-item-del="${gi}:${ii}">×</button>
+  `;
+  return row;
+}
+function collectSkills() {
+  const out = [];
+  document.querySelectorAll('[data-group-name]').forEach(inp => {
+    const gi = parseInt(inp.dataset.groupName, 10);
+    const items = [];
+    document.querySelectorAll(`[data-items="${gi}"] input[data-item]`).forEach(it => items.push(it.value));
+    out.push({ group: inp.value, items });
+  });
+  return out;
+}
+$('skills-list').addEventListener('click', (e) => {
+  const t = e.target.closest('button');
+  if (!t) return;
+  const skills = collectSkills();
+  if (t.dataset.groupUp !== undefined) {
+    const i = parseInt(t.dataset.groupUp, 10);
+    if (i > 0) { [skills[i-1], skills[i]] = [skills[i], skills[i-1]]; renderSkills(skills); }
+  } else if (t.dataset.groupDown !== undefined) {
+    const i = parseInt(t.dataset.groupDown, 10);
+    if (i < skills.length - 1) { [skills[i+1], skills[i]] = [skills[i], skills[i+1]]; renderSkills(skills); }
+  } else if (t.dataset.groupDel !== undefined) {
+    const i = parseInt(t.dataset.groupDel, 10);
+    if (!confirm(`Delete group "${skills[i].group || ''}"?`)) return;
+    skills.splice(i, 1); renderSkills(skills);
+  } else if (t.dataset.addItem !== undefined) {
+    const i = parseInt(t.dataset.addItem, 10);
+    skills[i].items.push(''); renderSkills(skills);
+  } else if (t.dataset.itemUp !== undefined) {
+    const [g, k] = t.dataset.itemUp.split(':').map(n => parseInt(n, 10));
+    if (k > 0) {
+      [skills[g].items[k-1], skills[g].items[k]] = [skills[g].items[k], skills[g].items[k-1]];
+      renderSkills(skills);
+    }
+  } else if (t.dataset.itemDown !== undefined) {
+    const [g, k] = t.dataset.itemDown.split(':').map(n => parseInt(n, 10));
+    if (k < skills[g].items.length - 1) {
+      [skills[g].items[k+1], skills[g].items[k]] = [skills[g].items[k], skills[g].items[k+1]];
+      renderSkills(skills);
+    }
+  } else if (t.dataset.itemDel !== undefined) {
+    const [g, k] = t.dataset.itemDel.split(':').map(n => parseInt(n, 10));
+    skills[g].items.splice(k, 1); renderSkills(skills);
+  }
+});
+$('add-skill-group').addEventListener('click', () => {
+  const skills = collectSkills();
+  skills.push({ group: '', items: [''] });
+  renderSkills(skills);
+});
+
+/* ---------- PROJECTS ---------- */
+function renderProjects(projects) {
+  const box = $('projects-list');
+  box.innerHTML = '';
+  projects.forEach((p, i) => box.appendChild(projectNode(p, i, 'software')));
+}
+
+function renderDrone(items) {
+  const box = $('drone-list');
+  box.innerHTML = '';
+  items.forEach((p, i) => box.appendChild(projectNode(p, i, 'drone')));
+}
+
+function projectNode(p, idx, kind) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.id = p.id;
+  card.dataset.kind = kind;
+
+  const imgs = Array.isArray(p.images) ? p.images : [];
+
+  card.innerHTML = `
+    <div class="flex items-center justify-between" style="margin-bottom:.85rem;">
+      <div class="chip">${kind === 'drone' ? 'Drone' : 'Software'}</div>
+      <div class="flex items-center gap-2">
+        <button class="btn btn-sm" data-move-up="${idx}">↑</button>
+        <button class="btn btn-sm" data-move-down="${idx}">↓</button>
+        <button class="btn btn-sm btn-danger" data-del="${idx}">Delete</button>
+      </div>
+    </div>
+
+    ${kind === 'drone' ? `
+      <div style="margin-bottom:.85rem;">
+        <label>Video file (MP4 / WebM)</label>
+        <div data-video-preview="${idx}" style="margin-bottom:.5rem;"></div>
+        <button class="btn btn-sm btn-ghost" data-video-btn="${idx}">Upload video</button>
+        <input type="file" accept="video/mp4,video/webm,video/quicktime" data-video-file="${idx}" style="display:none;">
+      </div>
+      <div style="margin-bottom:.85rem;">
+        <label>Poster image (shown before play)</label>
+        <div data-poster-preview="${idx}" style="margin-bottom:.5rem;"></div>
+        <button class="btn btn-sm btn-ghost" data-poster-btn="${idx}">Upload poster</button>
+        <input type="file" accept="image/*" data-poster-file="${idx}" style="display:none;">
+      </div>
+    ` : `
+      <div style="margin-bottom:.85rem;">
+        <label>Images (carousel order)</label>
+        <div data-thumbs="${idx}" style="display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:.5rem;"></div>
+        <button class="btn btn-sm btn-ghost" data-img-btn="${idx}">+ Add image</button>
+        <input type="file" accept="image/*" data-img-file="${idx}" style="display:none;">
+      </div>
+    `}
+
+    <div class="field">
+      <label>Title</label>
+      <input type="text" data-title="${idx}" value="${esc(p.title || '')}">
+    </div>
+    <div class="field">
+      <label>Description</label>
+      <textarea data-desc="${idx}">${esc(p.description || '')}</textarea>
+    </div>
+
+    ${kind === 'software' ? `
+      <div class="field">
+        <label>Live URL</label>
+        <input type="url" data-url="${idx}" value="${esc(p.live_url || '')}" placeholder="https://...">
+      </div>
+    ` : ''}
+
+    <div class="flex items-center gap-4" style="margin-top:.5rem;">
+      <label class="switch">
+        <input type="checkbox" data-status="${idx}" ${p.status === 'live' ? 'checked' : ''}>
+        <span class="track"></span>
+        <span class="lbl">Live</span>
+      </label>
+    </div>
+  `;
+
+  // Wire per-node events after mount
+  setTimeout(() => {
+    const root = document.querySelector(`.card[data-id="${p.id}"]`);
+    if (!root) return;
+
+    // Title, desc, url changes -> update on blur
+    root.querySelector(`[data-title="${idx}"]`)?.addEventListener('change', async (e) => {
+      await updateField(p.id, { title: e.target.value });
+      p.title = e.target.value;
+    });
+    root.querySelector(`[data-desc="${idx}"]`)?.addEventListener('change', async (e) => {
+      await updateField(p.id, { description: e.target.value });
+      p.description = e.target.value;
+    });
+    const urlEl = root.querySelector(`[data-url="${idx}"]`);
+    if (urlEl) urlEl.addEventListener('change', async (e) => {
+      await updateField(p.id, { live_url: e.target.value });
+      p.live_url = e.target.value;
+    });
+
+    // Status toggle
+    root.querySelector(`[data-status="${idx}"]`)?.addEventListener('change', async (e) => {
+      const status = e.target.checked ? 'live' : 'draft';
+      await updateField(p.id, { status });
+      p.status = status;
+    });
+
+    // Move / delete
+    root.querySelector(`[data-move-up="${idx}"]`)?.addEventListener('click', () => moveItem(kind, idx, -1));
+    root.querySelector(`[data-move-down="${idx}"]`)?.addEventListener('click', () => moveItem(kind, idx, 1));
+    root.querySelector(`[data-del="${idx}"]`)?.addEventListener('click', async () => {
+      if (!confirm(`Delete "${p.title || 'Untitled'}"?`)) return;
+      try {
+        await api('delete_project', { id: p.id });
+        if (kind === 'drone') state.drone.splice(idx, 1);
+        else state.projects.splice(idx, 1);
+        kind === 'drone' ? renderDrone(state.drone) : renderProjects(state.projects);
+      } catch (e) { alert(e.message); }
+    });
+
+    // Images
+    if (kind === 'software') {
+      const thumbsBox = root.querySelector(`[data-thumbs="${idx}"]`);
+      const renderThumbs = () => {
+        thumbsBox.innerHTML = '';
+        const list = Array.isArray(p.images) ? p.images : [];
+        list.forEach((url, i) => {
+          const wrap = document.createElement('div');
+          wrap.style.position = 'relative';
+          wrap.innerHTML = `
+            <img src="${url}" class="thumb">
+            <div class="flex gap-1" style="margin-top:4px;justify-content:center;">
+              <button class="btn btn-sm" data-i-up="${i}">←</button>
+              <button class="btn btn-sm" data-i-down="${i}">→</button>
+              <button class="btn btn-sm btn-danger" data-i-del="${i}">×</button>
+            </div>
+          `;
+          thumbsBox.appendChild(wrap);
+        });
+        thumbsBox.querySelectorAll('[data-i-up]').forEach(b => b.addEventListener('click', async () => {
+          const i = parseInt(b.dataset.iUp, 10);
+          if (i === 0) return;
+          const arr = p.images.slice();
+          [arr[i-1], arr[i]] = [arr[i], arr[i-1]];
+          await updateField(p.id, { images: arr });
+          p.images = arr; renderThumbs();
+        }));
+        thumbsBox.querySelectorAll('[data-i-down]').forEach(b => b.addEventListener('click', async () => {
+          const i = parseInt(b.dataset.iDown, 10);
+          if (i === p.images.length - 1) return;
+          const arr = p.images.slice();
+          [arr[i+1], arr[i]] = [arr[i], arr[i+1]];
+          await updateField(p.id, { images: arr });
+          p.images = arr; renderThumbs();
+        }));
+        thumbsBox.querySelectorAll('[data-i-del]').forEach(b => b.addEventListener('click', async () => {
+          const i = parseInt(b.dataset.iDel, 10);
+          const arr = p.images.slice(); arr.splice(i, 1);
+          await updateField(p.id, { images: arr });
+          p.images = arr; renderThumbs();
+        }));
+      };
+      renderThumbs();
+
+      const fileEl = root.querySelector(`[data-img-file="${idx}"]`);
+      root.querySelector(`[data-img-btn="${idx}"]`).addEventListener('click', () => fileEl.click());
+      fileEl.addEventListener('change', async (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const btn = root.querySelector(`[data-img-btn="${idx}"]`);
+        btn.textContent = 'Uploading…';
+        try {
+          const url = await uploadFile(f, 'projects');
+          const arr = (p.images || []).slice(); arr.push(url);
+          await updateField(p.id, { images: arr });
+          p.images = arr; renderThumbs();
+        } catch (err) { alert(err.message); }
+        finally { btn.textContent = '+ Add image'; e.target.value = ''; }
+      });
+    }
+
+    // Drone video + poster
+    if (kind === 'drone') {
+      const vPre = root.querySelector(`[data-video-preview="${idx}"]`);
+      const pPre = root.querySelector(`[data-poster-preview="${idx}"]`);
+      const renderVideo = () => {
+        vPre.innerHTML = p.video_url
+          ? `<video src="${p.video_url}" class="thumb" style="width:160px;height:90px;" controls></video>`
+          : '';
+      };
+      const renderPoster = () => {
+        pPre.innerHTML = p.poster_url
+          ? `<img src="${p.poster_url}" class="thumb" style="width:120px;height:80px;">`
+          : '';
+      };
+      renderVideo(); renderPoster();
+
+      const vFile = root.querySelector(`[data-video-file="${idx}"]`);
+      root.querySelector(`[data-video-btn="${idx}"]`).addEventListener('click', () => vFile.click());
+      vFile.addEventListener('change', async (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const btn = root.querySelector(`[data-video-btn="${idx}"]`);
+        btn.textContent = 'Uploading…';
+        try {
+          const url = await uploadFile(f, 'drone');
+          await updateField(p.id, { video_url: url });
+          p.video_url = url; renderVideo();
+        } catch (err) { alert(err.message); }
+        finally { btn.textContent = 'Upload video'; e.target.value = ''; }
+      });
+
+      const pFile = root.querySelector(`[data-poster-file="${idx}"]`);
+      root.querySelector(`[data-poster-btn="${idx}"]`).addEventListener('click', () => pFile.click());
+      pFile.addEventListener('change', async (e) => {
+        const f = e.target.files[0];
+        if (!f) return;
+        const btn = root.querySelector(`[data-poster-btn="${idx}"]`);
+        btn.textContent = 'Uploading…';
+        try {
+          const url = await uploadFile(f, 'drone');
+          await updateField(p.id, { poster_url: url });
+          p.poster_url = url; renderPoster();
+        } catch (err) { alert(err.message); }
+        finally { btn.textContent = 'Upload poster'; e.target.value = ''; }
+      });
+    }
+  }, 0);
+
+  return card;
+}
+
+async function updateField(id, patch) {
+  try {
+    await api('update_project', { project: { id, ...patch } });
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
+async function moveItem(kind, idx, dir) {
+  const arr = kind === 'drone' ? state.drone.slice() : state.projects.slice();
+  const j = idx + dir;
+  if (j < 0 || j >= arr.length) return;
+  [arr[idx], arr[j]] = [arr[j], arr[idx]];
+  if (kind === 'drone') state.drone = arr; else state.projects = arr;
+  const order = arr.map((p, i) => ({ id: p.id, sort_order: i + 1 }));
+  try {
+    await api('reorder_projects', { order });
+    kind === 'drone' ? renderDrone(state.drone) : renderProjects(state.projects);
+  } catch (e) { alert(e.message); }
+}
+
+$('add-project').addEventListener('click', async () => {
+  try {
+    const { project } = await api('create_project', {
+      project: {
+        title: 'New project', description: '', images: [],
+        live_url: '', status: 'draft', type: 'software',
+        sort_order: state.projects.length + 1
+      }
+    });
+    state.projects.push(project);
+    renderProjects(state.projects);
+  } catch (e) { alert(e.message); }
+});
+
+$('add-drone').addEventListener('click', async () => {
+  try {
+    const { project } = await api('create_project', {
+      project: {
+        title: 'New drone clip', description: '',
+        video_url: null, poster_url: null,
+        status: 'draft', type: 'drone',
+        sort_order: state.drone.length + 1
+      }
+    });
+    state.drone.push(project);
+    renderDrone(state.drone);
+  } catch (e) { alert(e.message); }
+});
+
+/* ---------- CONTACT ---------- */
+function renderSocials(socials) {
+  const box = $('socials-list');
+  box.innerHTML = '';
+  socials.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `
+      <input type="text" data-s-label="${i}" value="${esc(s.label)}" placeholder="GitHub" style="flex:0 0 120px;">
+      <input type="text" data-s-url="${i}" value="${esc(s.url)}" placeholder="https://...">
+      <button class="btn btn-sm" data-s-up="${i}">↑</button>
+      <button class="btn btn-sm" data-s-down="${i}">↓</button>
+      <button class="btn btn-sm btn-danger" data-s-del="${i}">×</button>
+    `;
+    box.appendChild(row);
+  });
+  box.querySelectorAll('[data-s-up]').forEach(b => b.addEventListener('click', () => {
+    const i = parseInt(b.dataset.sUp, 10);
+    const arr = collectSocials();
+    if (i > 0) { [arr[i-1], arr[i]] = [arr[i], arr[i-1]]; renderSocials(arr); }
+  }));
+  box.querySelectorAll('[data-s-down]').forEach(b => b.addEventListener('click', () => {
+    const i = parseInt(b.dataset.sDown, 10);
+    const arr = collectSocials();
+    if (i < arr.length - 1) { [arr[i+1], arr[i]] = [arr[i], arr[i+1]]; renderSocials(arr); }
+  }));
+  box.querySelectorAll('[data-s-del]').forEach(b => b.addEventListener('click', () => {
+    const i = parseInt(b.dataset.sDel, 10);
+    const arr = collectSocials(); arr.splice(i, 1); renderSocials(arr);
+  }));
+}
+function collectSocials() {
+  const out = [];
+  document.querySelectorAll('[data-s-label]').forEach((inp, i) => {
+    const u = document.querySelector(`[data-s-url="${i}"]`);
+    out.push({ label: inp.value, url: u ? u.value : '' });
+  });
+  return out.filter(s => s.label.trim() || s.url.trim());
+}
+$('add-social').addEventListener('click', () => {
+  const arr = collectSocials();
+  arr.push({ label: '', url: '' });
+  renderSocials(arr);
+});
+
+/* ---------- META PREVIEWS ---------- */
+$('favicon-upload').addEventListener('click', () => $('favicon-file').click());
+$('favicon-file').addEventListener('change', async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const url = await uploadFile(f, 'meta');
+    await api('save_meta', { key: 'favicon_url', value: url });
+    renderFavicon(url);
+    toast('meta', 'Favicon uploaded.');
+  } catch (err) { toast('meta', err.message, false); }
+  finally { e.target.value = ''; }
+});
+function renderFavicon(url) {
+  const box = $('favicon-preview'); box.innerHTML = '';
+  if (!url) return;
+  const img = document.createElement('img');
+  img.src = url; img.style.width = '32px'; img.style.height = '32px';
+  img.style.borderRadius = '6px'; img.style.border = '1px solid rgba(255,255,255,0.1)';
+  box.appendChild(img);
+}
+
+$('og-upload').addEventListener('click', () => $('og-file').click());
+$('og-file').addEventListener('change', async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const url = await uploadFile(f, 'meta');
+    await api('save_meta', { key: 'og_image_url', value: url });
+    renderOg(url);
+    toast('meta', 'OG image uploaded.');
+  } catch (err) { toast('meta', err.message, false); }
+  finally { e.target.value = ''; }
+});
+function renderOg(url) {
+  const box = $('og-preview'); box.innerHTML = '';
+  if (!url) return;
+  const img = document.createElement('img');
+  img.src = url; img.className = 'thumb';
+  img.style.width = '160px'; img.style.height = '90px';
+  box.appendChild(img);
+}
+
+/* ---------- SAVE ---------- */
+document.querySelectorAll('[data-save]').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const which = btn.dataset.save;
+    btn.disabled = true;
+    try {
+      if (which === 'hero') {
+        await api('save_content', { key: 'hero.name', value: $('hero-name').value });
+        await api('save_content', { key: 'hero.line', value: $('hero-line').value });
+        await api('save_content', { key: 'hero.action_label', value: $('hero-action').value });
+        await api('save_content', { key: 'hero.stats', value: collectStats() });
+      } else if (which === 'about') {
+        await api('save_content', { key: 'about.body', value: $('about-body').value });
+      } else if (which === 'skills') {
+        await api('save_content', { key: 'skills', value: collectSkills() });
+      } else if (which === 'contact') {
+        await api('save_content', { key: 'contact.email', value: $('contact-email').value });
+        await api('save_content', { key: 'contact.location', value: $('contact-location').value });
+        await api('save_content', { key: 'contact.whatsapp', value: $('contact-whatsapp').value });
+        await api('save_content', { key: 'contact.socials', value: collectSocials() });
+      } else if (which === 'meta') {
+        await api('save_meta', { key: 'title', value: $('meta-title').value });
+        await api('save_meta', { key: 'description', value: $('meta-description').value });
+        await api('save_content', { key: 'footer.line', value: $('footer-line').value });
+      }
+      toast(which, 'Saved.');
+    } catch (e) {
+      toast(which, e.message || 'Save failed.', false);
+    } finally {
+      btn.disabled = false;
+    }
+  });
+});
+
+/* ---------- BOOT ---------- */
+if (KEY) {
+  loadAll().then(hideGate).catch(() => {
+    sessionStorage.removeItem('mm_admin_key');
+    KEY = '';
+  });
+}
+</script>
+</body>
+</html>
